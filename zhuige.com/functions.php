@@ -304,7 +304,7 @@ function zhuige_theme_thumbnail_src_d($post_id, $post_content)
     $post_thumbnail_src = '';
     if (has_post_thumbnail($post_id)) {    //如果有特色缩略图，则输出缩略图地址
         $thumbnail_src = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full');
-        if (is_array($thumbnail_src) && count($thumbnail_src) > 0) {
+        if ($thumbnail_src) {
             $post_thumbnail_src = $thumbnail_src[0];
         }
     } 
@@ -316,7 +316,7 @@ function zhuige_theme_thumbnail_src_d($post_id, $post_content)
         if ($matches && isset($matches[1]) && isset($matches[1][0])) {
             $post_thumbnail_src = $matches[1][0];   //获取该图片 src
         }
-    };
+    }
 
     return $post_thumbnail_src;
 }
@@ -818,18 +818,6 @@ function zhuige_theme_is_favorite($user_id, $post_id)
 }
 
 /**
- * 追格签名
- */
-function zhuige_user_sign($user_id)
-{
-    $sign = get_user_meta($user_id, 'zhuige_theme_sign', true);
-    if (empty($sign)) {
-        $sign = '这个用户好懒，什么都没写……';
-    }
-    return $sign;
-}
-
-/**
  * 格式化文章列表项
  */
 function zhuige_theme_format_post($post, $require_thumb = false)
@@ -884,7 +872,7 @@ function zhuige_theme_url()
  */
 function zhuige_theme_user_sign($user_id)
 {
-    $sign = get_user_meta($user_id, 'zhuige_theme_sign', true);
+    $sign = get_user_meta($user_id, 'description', true);
     if (empty($sign)) {
         $sign = '这个用户有点懒，什么都没写~';
     }

@@ -107,7 +107,7 @@ endif;
 									<!-- vip 图标 -->
 									<!-- <img src="./images/vip.png" alt="vip" /> -->
 								</h6>
-								<p><?php echo zhuige_user_sign($post->post_author); ?></p>
+								<p><?php echo zhuige_theme_user_sign($post->post_author); ?></p>
 							</div>
 						</div>
 						<!-- <span>

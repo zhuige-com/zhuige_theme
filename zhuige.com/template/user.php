@@ -40,7 +40,6 @@ $cover = get_user_meta($user_id, 'zhuige_theme_cover', true);
 if (empty($cover)) {
 	$cover = ZHUIGE_THEME_URL . '/images/placeholder.png';;
 }
-$sign = get_user_meta($user_id, 'zhuige_theme_sign', true);
 
 get_header();
 ?>
@@ -57,7 +56,7 @@ get_header();
 						<a href="javascript:void(0)"><?php echo $nickname; ?></a>
 					</h6>
 					<!-- 用户简介 -->
-					<p><?php echo $sign ? $sign : '这个人很懒，什么也没说……' ?></p>
+					<p><?php echo zhuige_theme_user_sign($user_id) ?></p>
 				</div>
 			</div>
 

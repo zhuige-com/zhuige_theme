@@ -729,7 +729,7 @@ function ajax_set_user_info()
     update_user_meta($user_id, 'zhuige_theme_web', $web);
 
     $sign = isset($_POST["sign"]) ? sanitize_text_field($_POST["sign"]) : '';
-    update_user_meta($user_id, 'zhuige_theme_sign', $sign);
+    update_user_meta($user_id, 'description', $sign);
 
     $avatar = isset($_POST["avatar"]) ? sanitize_url($_POST["avatar"]) : '';
     if (!empty($avatar)) {

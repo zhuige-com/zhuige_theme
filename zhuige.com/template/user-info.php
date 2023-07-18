@@ -27,7 +27,6 @@ $weixin = get_user_meta($my_user_id, 'zhuige_theme_weixin', true);
 
 $user_email = $user->user_email;
 
-$sign = get_user_meta($my_user_id, 'zhuige_theme_sign', true);
 $wx_code = get_user_meta($my_user_id, 'zhuige_theme_wx_code', true);
 $reward_code = get_user_meta($my_user_id, 'zhuige_theme_reward_code', true);
 
@@ -47,7 +46,7 @@ get_header();
 						<a href="javascript:void(0)" target="_blank"><?php echo $nickname ?></a>
 					</h6>
 					<!-- 用户简介 -->
-					<p><?php echo $sign ? $sign : '说点啥吧……' ?></p>
+					<p><?php echo zhuige_theme_user_sign($my_user_id) ?></p>
 				</div>
 			</div>
 
