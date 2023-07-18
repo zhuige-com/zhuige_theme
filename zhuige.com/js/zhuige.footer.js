@@ -254,7 +254,7 @@ jQuery(document).ready(function ($) {
 
         var loading = layer.load();
         $.post("/wp-admin/admin-ajax.php", {
-            action: "zhuige_theme_xzdp_event",
+            action: "zhuige_theme_event",
             zgaction: 'forgot_send_email',
             email: email
         }, (res) => {
