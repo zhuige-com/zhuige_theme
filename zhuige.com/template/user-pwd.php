@@ -12,7 +12,7 @@ if (!is_user_logged_in()) {
 	exit;
 }
 
-$my_user_id = get_current_user_id();
+$my_user_id = get_current_user_id(); 
 
 get_header();
 ?>
@@ -80,18 +80,18 @@ get_header();
 
 
 <script>
-	jQuery(document).ready(function($) {
-		$('#btn_submit').click(function() {
-			var loading = layer.load();
-			$.post("/wp-admin/admin-ajax.php", {
-				action: 'modify_password',
-				oldpassword: $('#oldpassword').val(),
-				newpassword: $('#newpassword').val(),
-				renewpassword: $('#renewpassword').val(),
-			}, function(res) {
-				layer.close(loading);
+    jQuery(document).ready(function($) {
+        $('#btn_submit').click(function() {
+            var loading = layer.load();
+            $.post("/wp-admin/admin-ajax.php", {
+                action: 'modify_password',
+                oldpassword: $('#oldpassword').val(),
+                newpassword: $('#newpassword').val(),
+                renewpassword: $('#renewpassword').val(),
+            }, function(res) {
+                layer.close(loading);
 
-				if (!res.success) {
+                if (!res.success) {
 					if (res.data.error && res.data.error == 'login') {
 						show_login_pop();
 						return;
@@ -101,9 +101,9 @@ get_header();
 				}
 
 				window.location.reload();
-			});
-		});
-	});
+            });
+        });
+    });
 </script>
 
 <?php wp_footer(); ?>

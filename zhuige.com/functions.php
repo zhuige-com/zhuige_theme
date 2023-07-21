@@ -39,6 +39,7 @@ add_action('init',  function () {
 
     add_rewrite_rule('^user-info$', 'index.php?zhuige_page=user-info', 'top');
     add_rewrite_rule('^user-pwd$', 'index.php?zhuige_page=user-pwd', 'top');
+    add_rewrite_rule('^user-reset$', 'index.php?zhuige_page=user-reset', 'top');
 
     add_rewrite_rule('^user/([^/]*)/([^/]*)\\.html$', 'index.php?zhuige_page=user&track=$matches[1]&user_slug=$matches[2]', 'top');
 
@@ -48,6 +49,7 @@ add_action('init',  function () {
 });
 
 add_filter('query_vars', function ($query_vars) {
+    $query_vars[] = 'zhuige_plugin';
     $query_vars[] = 'zhuige_page';
 
     $query_vars[] = 'track';
@@ -57,8 +59,9 @@ add_filter('query_vars', function ($query_vars) {
 });
 
 add_action('template_include', function ($template) {
+    $zhuige_plugin = get_query_var('zhuige_plugin');
     $zhuige_page = get_query_var('zhuige_page');
-    if ($zhuige_page == false || $zhuige_page == '') {
+    if ($zhuige_plugin || $zhuige_page == false || $zhuige_page == '') {
         return $template;
     }
 
@@ -307,8 +310,8 @@ function zhuige_theme_thumbnail_src_d($post_id, $post_content)
         if ($thumbnail_src) {
             $post_thumbnail_src = $thumbnail_src[0];
         }
-    } 
-    
+    }
+
     if (empty($post_thumbnail_src)) {
         ob_start();
         ob_end_clean();
@@ -381,13 +384,24 @@ function zhuige_theme_inc_post_view($post_id)
 /**
  * 获取浏览数
  */
-function zhuige_theme_get_post_view($post_id)
+function zhuige_theme_get_view_count($post_id)
 {
     $view_count = get_post_meta($post_id, "view_count", true);
     if (!$view_count) {
         $view_count = 0;
     }
     return $view_count;
+}
+
+/**
+ * 点赞个数
+ */
+function zhuige_theme_get_like_count($post_id)
+{
+    global $wpdb;
+
+    $table_post_like = $wpdb->prefix . 'zhuige_theme_post_like';
+    return $wpdb->get_var($wpdb->prepare("SELECT COUNT(`id`) FROM `$table_post_like` WHERE `post_id`=%d", $post_id));
 }
 
 /**
@@ -779,13 +793,18 @@ function zhuige_theme_comment_list($comment, $args, $depth)
 /**
  * 追格头像
  */
-function zhuige_user_avatar($user_id)
+function zhuige_user_avatar_src($user_id)
 {
     $avatar = get_user_meta($user_id, 'zhuige_user_avatar', true);
     if (empty($avatar)) {
         $avatar = ZHUIGE_THEME_URL . '/images/avatar.png';
     }
 
+    return $avatar;
+}
+function zhuige_user_avatar($user_id)
+{
+    $avatar = zhuige_user_avatar_src($user_id);
     return '<img alt="picture loss" src="' . $avatar . '" />';
 }
 
@@ -836,7 +855,7 @@ function zhuige_theme_format_post($post, $require_thumb = false)
 
     $item["excerpt"] = zhuige_theme_excerpt($post, zhuige_theme_option('home_excerpt_length', 120));
 
-    $item['view_count'] = zhuige_theme_get_post_view($post->ID);
+    $item['view_count'] = zhuige_theme_get_view_count($post->ID);
 
     $item['time'] = zhuige_theme_time_ago($post->post_date_gmt);
 
@@ -1314,3 +1333,21 @@ CSF::createSection($zhuige_category_options, array(
         ),
     )
 ));
+
+/**
+ * 在评论列表中 增加积分
+ */
+add_filter('manage_edit-comments_columns', 'my_comments_columns');
+add_action('manage_comments_custom_column', 'output_my_comments_columns', 10, 2);
+function my_comments_columns($columns)
+{
+    $columns['zhuige_theme_resource_score'] = '产品打分';
+    return $columns;
+}
+
+function output_my_comments_columns($column_name, $column_id)
+{
+    if ($column_name == 'zhuige_theme_resource_score') {
+        echo get_comment_meta($column_id, 'zhuige_theme_resource_score', true);
+    }
+}

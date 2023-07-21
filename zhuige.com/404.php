@@ -25,5 +25,4 @@ get_header();
 </script>
 
 </body>
-
 </html>

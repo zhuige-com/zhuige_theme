@@ -30,7 +30,7 @@ if (post_password_required()) {
                 <span>（<?php echo $post->comment_count ?>条）</span>
             </p>
             <p class="zhuige-comment-reply-container" style="display:none;">
-                <cite>回复：<text class="zhuige-comment-reply-nickname">酱茄小助手</text></cite>
+                <cite>回复：<text class="zhuige-comment-reply-nickname"></text></cite>
                 <a href="javascript:void(0)" class="zhuige-btn-comment-reply-cancel" title="">取消回复</a>
             </p>
         </h3>

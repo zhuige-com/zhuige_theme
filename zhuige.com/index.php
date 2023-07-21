@@ -75,7 +75,7 @@ $hot_words = explode(',', $home_header['hot_words']);
 			if ($home_header['bg_image'] && $home_header['bg_image']['url']) {
 				$home_header_background = $home_header['bg_image']['url'];
 			} else {
-				$home_header_background = ZHUIGE_THEME_URL . '/images/home_header_background.jpg';
+				$home_header_background = ZHUIGE_THEME_URL . '/images/header_background.jpg';
 			}
 		?>
 			<!-- 搜索区背景可以设置为图片或视频 -->

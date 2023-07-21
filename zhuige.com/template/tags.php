@@ -11,7 +11,7 @@ $background = zhuige_theme_option('tags_bg');
 if ($background && $background['url']) {
 	$background = $background['url'];
 } else {
-	$background = ZHUIGE_THEME_URL . '/images/home_header_background.jpg';
+	$background = ZHUIGE_THEME_URL . '/images/header_background.jpg';
 }
 
 $terms = get_terms(array(
@@ -40,7 +40,7 @@ $terms = get_terms(array(
 
 				<?php
 				foreach ($terms as $term) {
-				?>
+					?>
 					<div class="md-3 p-10">
 						<div class="zhuige-tags p-20">
 							<h4 class="d-flex align-items-center mb-20">
@@ -49,14 +49,14 @@ $terms = get_terms(array(
 							</h4>
 							<p>
 								<?php
-								$the_query = new WP_Query(['offset' => 0, 'posts_per_page ' => 1, 'ignore_sticky_posts' => 1, 'tag_id' => $term->term_id,]);
-								if ($the_query->have_posts()) {
-									$the_query->the_post();
-									global $post;
-									echo '<a href="' . get_the_permalink() . '" title="' . $post->post_title . '">' . $post->post_title . '</a>';
-								} else {
-								}
-								wp_reset_postdata();
+									$the_query = new WP_Query(['offset'=>0, 'posts_per_page ' => 1, 'ignore_sticky_posts' => 1, 'tag_id' => $term->term_id, ]);
+									if ($the_query->have_posts()) {
+										$the_query->the_post();
+										global $post;
+										echo '<a href="' . get_the_permalink() . '" title="' . $post->post_title . '">' . $post->post_title . '</a>';
+									} else {
+									}
+									wp_reset_postdata();
 								?>
 							</p>
 						</div>

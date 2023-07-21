@@ -6,7 +6,6 @@ jQuery(document).ready(function ($) {
 
     /** -- 点赞 -- start -- */
     $('.zhuige-btn-like').click(function () {
-        console.log(1);
         var loading = layer.load();
         $.post("/wp-admin/admin-ajax.php", {
             action: "zhuige_theme_event",
@@ -31,7 +30,6 @@ jQuery(document).ready(function ($) {
 
     /** -- 收藏 -- start -- */
     $('.zhuige-btn-favorite').click(function () {
-        console.log(1);
         var loading = layer.load();
         $.post("/wp-admin/admin-ajax.php", {
             action: "zhuige_theme_event",

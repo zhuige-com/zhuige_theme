@@ -668,6 +668,55 @@ CSF::createSection($prefix, array(
 ));
 
 //
+// 支付设置
+//
+CSF::createSection($prefix, array(
+    'parent' => 'other',
+    'title' => '支付设置',
+    'icon'  => 'fab fa-wordpress',
+    'fields' => array(
+
+        array(
+            'id'     => 'weixin_pay',
+            'type'   => 'fieldset',
+            'title'  => '微信支付',
+            'fields' => array(
+                array(
+                    'id'    => 'appid',
+                    'type'  => 'text',
+                    'title' => 'app id',
+                ),
+
+                array(
+                    'id'    => 'mchid',
+                    'type'  => 'text',
+                    'title' => '商户号',
+                ),
+
+                array(
+                    'id'    => 'key',
+                    'type'  => 'text',
+                    'title' => 'KEY',
+                ),
+
+                array(
+                    'id'    => 'private_serial',
+                    'type'  => 'text',
+                    'title' => '私钥序列号',
+                ),
+
+                array(
+                    'id'    => 'pub_serial',
+                    'type'  => 'text',
+                    'title' => '公钥序列号',
+                ),
+            ),
+        ),
+
+    )
+));
+
+//
 // 备份
 //
 CSF::createSection($prefix, array(

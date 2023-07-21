@@ -363,8 +363,8 @@ function zhuige_theme_event()
         }
 
         // Check the e-mail address
-        $pwd = isset($_POST['pwd']) ? $_POST['pwd'] : '';
-        $repwd = isset($_POST['repwd']) ? $_POST['repwd'] : '';
+		$pwd = isset($_POST['pwd']) ? $_POST['pwd'] : '';
+		$repwd = isset($_POST['repwd']) ? $_POST['repwd'] : '';
         if ($user_email == '') {
             wp_send_json_error('请填写电子邮件地址');
         } elseif (!is_email($user_email)) {
@@ -380,7 +380,6 @@ function zhuige_theme_event()
             wp_send_json_error('两次输入的密码必须一致');
         }
 
-        // $user_id = wp_create_user($username, $_POST['pwd'], $user_email);
         $user_id = wp_insert_user([
             'user_login' => $username,
             'user_pass' => $pwd,
@@ -404,7 +403,7 @@ function zhuige_theme_event()
 
         wp_send_json_success();
     } else if ($action == 'login') { // 登录
-        $username = sanitize_user($_POST['log']);
+        $username = isset($_POST['log']) ? sanitize_user($_POST['log']) : '';
 
         // Check the username
         if ($username == '') {
@@ -413,7 +412,7 @@ function zhuige_theme_event()
             wp_send_json_error('用户名包含无效字符');
         }
 
-        $pwd = isset($_POST['pwd']) ? $_POST['pwd'] : '';
+		$pwd = isset($_POST['pwd']) ? $_POST['pwd'] : '';
         if (strlen($pwd) < 6) {
             wp_send_json_error('密码长度至少6位');
         }
@@ -490,6 +489,12 @@ function zhuige_theme_event()
 
         wp_set_password($password, $user_id);
 
+        // 清空token
+        update_user_meta($user_id, 'zhuige_theme_reset_token', [
+            'token' => '',
+            'expire' => time() - 10
+        ]);
+
         wp_send_json_success();
     } else if ($action == 'comment') { // 评论
         $my_user_id = get_current_user_id();
@@ -500,6 +505,21 @@ function zhuige_theme_event()
         $post_id = isset($_POST["post_id"]) ? (int)($_POST["post_id"]) : 0;
         if (!$post_id) {
             wp_send_json_error('缺少参数');
+        }
+
+        global $wpdb;
+        $table_comments = $wpdb->prefix . 'comments';
+
+        $score = isset($_POST["score"]) ? (int)($_POST["score"]) : 0;
+        if ($score) {
+            $comment_count = $wpdb->get_var(
+                // $wpdb->prepare(
+                "SELECT COUNT(`comment_ID`) FROM `$table_comments` WHERE `comment_post_ID`=$post_id AND `user_id`=$my_user_id"
+                // )
+            );
+            if ($comment_count) {
+                wp_send_json_error('已经评论过了~');
+            }
         }
 
         $content = isset($_POST["content"]) ? sanitize_text_field(wp_unslash($_POST["content"])) : '';
@@ -519,6 +539,9 @@ function zhuige_theme_event()
         ]);
 
         if ($comment_id) {
+            if ($score) {
+                add_comment_meta($comment_id, 'zhuige_theme_resource_score', $score, true);
+            }
             wp_send_json_success();
         } else {
             wp_send_json_error('请稍后再试');
@@ -575,6 +598,11 @@ function zhuige_theme_event()
             $is_like = 1;
         }
 
+        $like_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(`id`) FROM `$table_post_like` WHERE `post_id`=%d", $post_id));
+        if (!update_post_meta($post_id, 'like_count', $like_count)) {
+            add_post_meta($post_id, 'like_count', $like_count, true);
+        }
+
         wp_send_json_success(['is_like' => $is_like]);
     } else if ($action == 'favorite') { // 收藏
         $my_user_id = get_current_user_id();
@@ -598,7 +626,7 @@ function zhuige_theme_event()
 
         $is_favorite = 0;
         if ($post_favorite_id) {
-            $wpdb->query("DELETE FROM `$table_post_favorite` WHERE `id`=$post_favorite_id");
+            $wpdb->query($wpdb->prepare("DELETE FROM `$table_post_favorite` WHERE `id`=%d", $post_favorite_id));
             $is_favorite = 0;
         } else {
             $wpdb->insert($table_post_favorite, [
@@ -607,6 +635,11 @@ function zhuige_theme_event()
                 'time' => time()
             ]);
             $is_favorite = 1;
+        }
+
+        $favorite_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(`id`) FROM `$table_post_favorite` WHERE `post_id`=%d", $post_id));
+        if (!update_post_meta($post_id, 'favorite_count', $favorite_count)) {
+            add_post_meta($post_id, 'favorite_count', $favorite_count, true);
         }
 
         wp_send_json_success(['is_favorite' => $is_favorite]);
@@ -709,44 +742,44 @@ function ajax_set_user_info()
         wp_send_json_error(['error' => 'login', 'msg' => '尚未登录']);
     }
 
-    $nickname = isset($_POST["nickname"]) ? sanitize_text_field($_POST["nickname"]) : '';
+	$nickname = isset($_POST['nickname']) ? sanitize_text_field($_POST['nickname']) : '';
     if (!empty($nickname)) {
-        wp_update_user([
-            'ID' => $user_id,
-            'nickname' => $nickname,
-            'user_nicename' => $nickname,
-            'display_name' => $nickname,
-        ]);
+		wp_update_user([
+			'ID' => $user_id,
+			'nickname' => $nickname,
+			'user_nicename' => $nickname,
+			'display_name' => $nickname,
+		]);
     }
 
-    $gender = isset($_POST["gender"]) ? sanitize_text_field($_POST["gender"]) : '';
+	$gender = isset($_POST['gender']) ? sanitize_text_field($_POST['gender']) : '';
     update_user_meta($user_id, 'zhuige_theme_gender', $gender);
 
-    $city = isset($_POST["city"]) ? sanitize_text_field($_POST["city"]) : '';
+	$city = isset($_POST['city']) ? sanitize_text_field($_POST['city']) : '';
     update_user_meta($user_id, 'zhuige_theme_city', $city);
 
-    $web = isset($_POST["web"]) ? sanitize_url($_POST["web"]) : '';
+	$web = isset($_POST['web']) ? sanitize_url($_POST['web']) : '';
     update_user_meta($user_id, 'zhuige_theme_web', $web);
 
-    $sign = isset($_POST["sign"]) ? sanitize_text_field($_POST["sign"]) : '';
+	$sign = isset($_POST['sign']) ? sanitize_text_field($_POST['sign']) : '';
     update_user_meta($user_id, 'description', $sign);
 
-    $avatar = isset($_POST["avatar"]) ? sanitize_url($_POST["avatar"]) : '';
+	$avatar = isset($_POST['avatar']) ? sanitize_url($_POST['avatar']) : '';
     if (!empty($avatar)) {
         update_user_meta($user_id, 'zhuige_user_avatar', $avatar);
     }
 
-    $cover = isset($_POST["cover"]) ? sanitize_url($_POST["cover"]) : '';
+	$cover = isset($_POST['cover']) ? sanitize_url($_POST['cover']) : '';
     if (!empty($cover)) {
         update_user_meta($user_id, 'zhuige_theme_cover', $cover);
     }
 
-    $reward_code = isset($_POST["reward_code"]) ? sanitize_text_field($_POST["reward_code"]) : '';
+	$reward_code = isset($_POST['reward_code']) ? sanitize_text_field($_POST['reward_code']) : '';
     if (!empty($reward_code)) {
         update_user_meta($user_id, 'zhuige_theme_reward_code', $reward_code);
     }
 
-    $wx_code = isset($_POST["wx_code"]) ? sanitize_text_field($_POST["wx_code"]) : '';
+	$wx_code = isset($_POST['wx_code']) ? sanitize_text_field($_POST['wx_code']) : '';
     if (!empty($wx_code)) {
         update_user_meta($user_id, 'zhuige_theme_wx_code', $wx_code);
     }

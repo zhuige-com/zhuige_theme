@@ -9,7 +9,7 @@ $background = zhuige_theme_option('about_bg');
 if ($background && $background['url']) {
 	$background = $background['url'];
 } else {
-	$background = ZHUIGE_THEME_URL . '/images/home_header_background.jpg';
+	$background = ZHUIGE_THEME_URL . '/images/header_background.jpg';
 }
 
 the_post();

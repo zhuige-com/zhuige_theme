@@ -40,8 +40,22 @@ $cover = get_user_meta($user_id, 'zhuige_theme_cover', true);
 if (empty($cover)) {
 	$cover = ZHUIGE_THEME_URL . '/images/placeholder.png';;
 }
+// $sign = get_user_meta($user_id, 'description', true);
 
-get_header();
+// global $wpdb;
+// $per_page_count = 8;
+
+?>
+
+<?php get_header(); ?>
+
+<?php
+// $home_site_bg = zhuige_theme_option('user_site_bg');
+// if ($home_site_bg && $home_site_bg['url']) {
+// 	$home_site_bg = $home_site_bg['url'];
+// } else {
+// 	$home_site_bg = ZHUIGE_THEME_URL . '/images/header_background.jpg';
+// }
 ?>
 
 <div class="zhuige-advert zhuige-advert-about relative">
@@ -54,6 +68,8 @@ get_header();
 				<div class="user-info">
 					<h6 class="d-flex align-items-center mb-10">
 						<a href="javascript:void(0)"><?php echo $nickname; ?></a>
+						<!-- vip 图标 -->
+						<!-- <img src="./images/vip.png" alt="vip" /> -->
 					</h6>
 					<!-- 用户简介 -->
 					<p><?php echo zhuige_theme_user_sign($user_id) ?></p>
@@ -85,19 +101,25 @@ get_header();
 	<div class="d-flex justify-content-center">
 
 		<article class="zhuige-user-page-list md-9">
-			<?php
-			if ($track == 'comment') {
-				$result = zhuige_theme_posts_user_comment($user_id, 0);
-				echo '<div class="zhuige-box row">';
-				echo $result['content'];
-				echo '</div>';
-			} else {
-				$result = zhuige_theme_posts_user_like_fav($user_id, 0, $track);
-				echo '<div class="zhuige-fourfold-list zhuige-resource-triple row d-flex flex-wrap mb-20 zhuige-list-container">';
-				echo $result['content'];
-				echo '</div>';
-			}
-			?>
+
+			<!-- <div class="zhuige-fourfold-list zhuige-resource-triple row d-flex flex-wrap mb-20 zhuige-list-container"> -->
+				<?php
+				if ($track == 'comment') {
+					$result = zhuige_theme_posts_user_comment($user_id, 0);
+					echo '<div class="zhuige-box row">';
+					echo $result['content'];
+					echo '</div>';
+				} else {
+					$result = zhuige_theme_posts_user_like_fav($user_id, 0, $track);
+					echo '<div class="zhuige-fourfold-list zhuige-resource-triple row d-flex flex-wrap mb-20 zhuige-list-container">';
+					echo $result['content'];
+					echo '</div>';
+				}
+				
+				// echo $result['content'];
+				?>
+			<!-- </div> -->
+
 
 			<?php
 			if (empty($result['content'])) {

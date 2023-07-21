@@ -80,7 +80,7 @@ if (!$list_header) {
 				if ($list_header['bg_image'] && $list_header['bg_image']['url']) {
 					$list_header_background = $list_header['bg_image']['url'];
 				} else {
-					$list_header_background = ZHUIGE_THEME_URL . '/images/list_header_background.jpg';
+					$list_header_background = ZHUIGE_THEME_URL . '/images/header_background.jpg';
 				}
 			?>
 				<!-- 搜索区背景可以设置为图片或视频 -->

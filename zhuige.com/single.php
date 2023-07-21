@@ -10,7 +10,7 @@ if (have_posts()) :
 
 	global $post;
 	zhuige_theme_inc_post_view($post->ID);
-	$view_count = zhuige_theme_get_post_view($post->ID);
+	$view_count = zhuige_theme_get_view_count($post->ID);
 
 	global $wpdb;
 

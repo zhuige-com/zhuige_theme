@@ -27,6 +27,7 @@ $weixin = get_user_meta($my_user_id, 'zhuige_theme_weixin', true);
 
 $user_email = $user->user_email;
 
+// $sign = get_user_meta($my_user_id, 'description', true);
 $wx_code = get_user_meta($my_user_id, 'zhuige_theme_wx_code', true);
 $reward_code = get_user_meta($my_user_id, 'zhuige_theme_reward_code', true);
 
@@ -44,6 +45,8 @@ get_header();
 				<div class="user-info">
 					<h6 class="d-flex align-items-center mb-10">
 						<a href="javascript:void(0)" target="_blank"><?php echo $nickname ?></a>
+						<!-- vip 图标 -->
+						<!-- <img src="./images/vip.png" alt="vip" /> -->
 					</h6>
 					<!-- 用户简介 -->
 					<p><?php echo zhuige_theme_user_sign($my_user_id) ?></p>
@@ -159,6 +162,29 @@ get_header();
 							</p>
 						</div>
 
+						<!--
+						<div class="zhuige-forum-line mb-20">
+							<h6>微信二维码</h6>
+							<input style="display: none;" id="wx_code_picker" type="file" name="wx_code" accept="image/*" />
+							<div class="zhuige-upload">
+								<?php if ($wx_code) { ?>
+									<p class="relative">
+										<strong>
+											<img src="<?php echo $wx_code; ?>" />
+										</strong>
+										<cite class="absolute zhuige-btn-delete-wx-code">
+											<img src="<?php echo ZHUIGE_THEME_URL . '/images/cuo.png' ?>" alt="删除" />
+										</cite>
+									</p>
+								<?php } else { ?>
+									<p class="relative wx_code_picker_trigger">
+										<span></span>
+										<text>请上传</text>
+									</p>
+								<?php } ?>
+							</div>
+						</div>
+						-->
 					</div>
 				</div>
 
@@ -357,5 +383,4 @@ get_header();
 <?php wp_footer(); ?>
 
 </body>
-
 </html>
