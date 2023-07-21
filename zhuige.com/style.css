@@ -4783,7 +4783,8 @@ aside .zhuige-list .zhuige-list-img,
 
 /* 找回密码 */
 .zhuige-re-pass {
-	margin: 100px;
+	padding: 160px 0;
+	height: 600px;
 }
 .zhuige-re-pass-form {
 	background: #FFFFFF;
@@ -5294,5 +5295,8 @@ aside .zhuige-list .zhuige-list-img,
 	}
 	.zhuige-vip-group div:nth-last-child(3n) {
 		margin-right: 0;
+	}
+	.zhuige-re-pass-form {
+		width: 90%;
 	}
 }
