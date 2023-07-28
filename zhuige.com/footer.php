@@ -21,7 +21,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 	<!-- 账号登录 - 注册 -->
 	<div class="zhuige-pop-box p-20 zhuige-pop-login" style="display: none;">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
-		<h3 class="mb-20 mt-10">帐号登录</h3>
+		<h3 class="mb-20 mt-10">账号登录</h3>
 		<div class="zhuige-pop-form">
 			<p class="mb-20 d-flex justify-content-between">
 				<text>用户名/邮箱</text>
@@ -37,7 +37,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 				<span>
 					<?php
 					if ($register_normal) {
-						echo '<a href="javascript:void(0)" class="zhuige-btn-pop-register" title="帐号注册">帐号注册</a>';
+						echo '<a href="javascript:void(0)" class="zhuige-btn-pop-register" title="账号注册">账号注册</a>';
 					}
 					if ($register_normal && $login_weixin) {
 						echo '&nbsp;/&nbsp;';
@@ -73,7 +73,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 			</div>
 		</div>
 		<div class="zhuige-pop-tips pt-20 d-flex align-items-center justify-content-between">
-			<a href="javascript:void(0)" class="zhuige-btn-pop-login" title="帐号登录">帐号登录</a>
+			<a href="javascript:void(0)" class="zhuige-btn-pop-login" title="账号登录">账号登录</a>
 			<p class="d-flex align-items-center">
 				<a href="<?php echo get_page_link(zhuige_theme_option('login_yhxy')) ?>" target="_blank" title="用户协议">用户协议</a>
 				<text>|</text>
@@ -85,7 +85,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 	<!-- 标准弹窗 - 注册 -->
 	<div class="zhuige-pop-box p-20 zhuige-pop-register" style="display: none;">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
-		<h3 class="mb-20 mt-10">帐号注册</h3>
+		<h3 class="mb-20 mt-10">账号注册</h3>
 		<div class="zhuige-pop-form">
 			<p class="mb-20 d-flex justify-content-between">
 				<text>用户名</text>
@@ -107,7 +107,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 		<div class="zhuige-pop-opt">
 			<p class="mb-20 d-flex align-items-center justify-content-between">
 				<span>
-					<a href="javascript:void(0)" class="zhuige-btn-pop-login" title="">帐号登录</a>
+					<a href="javascript:void(0)" class="zhuige-btn-pop-login" title="">账号登录</a>
 					<?php
 					if ($login_weixin) {
 						echo '&nbsp;/&nbsp;';
