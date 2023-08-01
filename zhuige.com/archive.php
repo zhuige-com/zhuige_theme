@@ -120,7 +120,7 @@ if (!$list_header) {
 		<div class="row d-flex justify-content-center">
 			<article class="md-9">
 				<!-- 分类列表样式-1（非全宽单列）  ps:搜索、标签 列表用本列表样式  -->
-				<div class="zhuige-box zhuige-arc-list pl-20 pr-20" class="zhuige-list-container"><!-- 白背景基础块 -->
+				<div class="zhuige-box zhuige-arc-list pl-20 pr-20 zhuige-list-container"><!-- 白背景基础块 -->
 					<?php echo $result['content']; ?>
 				</div>
 

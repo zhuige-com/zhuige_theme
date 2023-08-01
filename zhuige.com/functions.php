@@ -160,6 +160,7 @@ function zhuige_theme_init()
     wp_register_script('zhuige-footer-script', $url . '/js/zhuige.footer.js', ['jquery'], '0.1', true);
     wp_register_script('zhuige-index-script', $url . '/js/zhuige.index.js', ['jquery'], '0.1', true);
     wp_register_script('zhuige-archive-script', $url . '/js/zhuige.archive.js', ['jquery'], '0.1', true);
+    wp_register_script('zhuige-search-script', $url . '/js/zhuige.search.js', ['jquery'], '0.1', true);
     wp_register_script('zhuige-single-script', $url . '/js/zhuige.single.js', ['lib-layer'], '0.1', true);
 
     // 其它需要在init action处运行的脚本
@@ -177,6 +178,10 @@ function zhuige_theme_scripts()
 
     if (is_archive()) {
         wp_enqueue_script('zhuige-archive-script');
+    }
+
+    if (is_search()) {
+        wp_enqueue_script('zhuige-search-script');
     }
 
     if (is_home()) {

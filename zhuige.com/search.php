@@ -80,7 +80,7 @@ if (!$list_header) {
 		</div>
 		<div class="row d-flex">
 			<article class="md-12">
-				<div class="zhuige-box zhuige-arc-list pl-20 pr-20">
+				<div class="zhuige-box zhuige-arc-list pl-20 pr-20 zhuige-list-container">
 					<?php echo $result['content']; ?>
 				</div>
 
