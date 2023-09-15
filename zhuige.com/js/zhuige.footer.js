@@ -161,7 +161,7 @@ jQuery(document).ready(function ($) {
         $('.zhuige-pop-forgot').hide();
         $('.zhuige-pop-search').hide();
 
-        $('.zhuige-pop-mask').show();
+        // $('.zhuige-pop-mask').show();
         $('.zhuige-pop-qrcode').show();
 
         let code_attr = $('#zhuige-wechat-login');
@@ -198,7 +198,7 @@ jQuery(document).ready(function ($) {
         $('.zhuige-pop-forgot').hide();
         $('.zhuige-pop-search').hide();
 
-        $('.zhuige-pop-mask').show();
+        // $('.zhuige-pop-mask').show();
         $('.zhuige-pop-register').show();
 
         return false;
@@ -213,7 +213,7 @@ jQuery(document).ready(function ($) {
         $('.zhuige-pop-register').hide();
         $('.zhuige-pop-search').hide();
 
-        $('.zhuige-pop-mask').show();
+        // $('.zhuige-pop-mask').show();
         $('.zhuige-pop-forgot').show();
 
         return false;
@@ -228,7 +228,7 @@ jQuery(document).ready(function ($) {
         $('.zhuige-pop-forgot').hide();
         $('.zhuige-pop-search').hide();
 
-        $('.zhuige-pop-mask').show();
+        // $('.zhuige-pop-mask').show();
         $('.zhuige-pop-login').show();
     }
     $('.zhuige-btn-pop-login').click(() => {
@@ -276,7 +276,7 @@ jQuery(document).ready(function ($) {
      * 关闭弹框
      */
     $('.zhuige-pop-mask, .zhuige-btn-close-pop').click(() => {
-        $('.zhuige-pop-mask').hide();
+        // $('.zhuige-pop-mask').hide();
         $('.zhuige-pop-login').hide();
         $('.zhuige-pop-qrcode').hide();
         $('.zhuige-pop-register').hide();

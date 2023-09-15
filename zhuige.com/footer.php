@@ -16,10 +16,10 @@ if (!defined('ABSPATH')) {
 $register_normal = zhuige_theme_option('register_normal_switch');
 $login_weixin = zhuige_theme_option('login_weixin_switch');
 ?>
-<div class="zhuige-pop-mask d-flex align-items-center justify-content-center" style="display: none;">
 
-	<!-- 账号登录 - 注册 -->
-	<div class="zhuige-pop-box p-20 zhuige-pop-login" style="display: none;">
+<!-- 账号登录 - 注册 -->
+<div class="zhuige-pop-mask d-flex align-items-center justify-content-center zhuige-pop-login" style="display: none;">
+	<div class="zhuige-pop-box p-20">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
 		<h3 class="mb-20 mt-10">账号登录</h3>
 		<div class="zhuige-pop-form">
@@ -62,9 +62,11 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 			<label><input type="checkbox" class="zhuige-text-login-agreement" />我已阅读并同意</label>
 		</div>
 	</div>
+</div>
 
-	<!-- 标准弹窗 - 扫码 -->
-	<div class="zhuige-pop-box p-20 zhuige-pop-qrcode" style="display: none;">
+<!-- 标准弹窗 - 扫码 -->
+<div class="zhuige-pop-mask d-flex align-items-center justify-content-center zhuige-pop-qrcode" style="display: none;">
+	<div class="zhuige-pop-box p-20">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
 		<h3 class="mb-20 mt-10">微信扫码登录</h3>
 		<div class="zhuige-pop-qr pb-20">
@@ -81,9 +83,11 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 			</p>
 		</div>
 	</div>
+</div>
 
-	<!-- 标准弹窗 - 注册 -->
-	<div class="zhuige-pop-box p-20 zhuige-pop-register" style="display: none;">
+<!-- 标准弹窗 - 注册 -->
+<div class="zhuige-pop-mask d-flex align-items-center justify-content-center zhuige-pop-register" style="display: none;">
+	<div class="zhuige-pop-box p-20">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
 		<h3 class="mb-20 mt-10">账号注册</h3>
 		<div class="zhuige-pop-form">
@@ -129,10 +133,11 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 			<label><input type="checkbox" class="zhuige-text-reg-agreement" />我已阅读并同意</label>
 		</div>
 	</div>
+</div>
 
-
-	<!-- 标准弹窗 - 找回密码 -->
-	<div class="zhuige-pop-box p-20 zhuige-pop-forgot" style="display: none;">
+<!-- 标准弹窗 - 找回密码 -->
+<div class="zhuige-pop-mask d-flex align-items-center justify-content-center zhuige-pop-forgot" style="display: none;">
+	<div class="zhuige-pop-box p-20">
 		<span class="closed zhuige-btn-close-pop">关闭</span>
 		<h3 class="mb-20 mt-10">找回密码</h3>
 		<div class="zhuige-pop-form">
@@ -146,10 +151,28 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 			</p>
 		</div>
 	</div>
-
 </div>
 
 <footer>
+	<?php
+	$footer_nav = zhuige_theme_option('footer_nav');
+	if (!empty($footer_nav)) {
+	?>
+		<div class="container zhuige-site-links d-flex align-content-center">
+			<?php
+			$end_item = end($footer_nav);
+			foreach ($footer_nav as $nav) :
+				echo '<a href="' . $nav['url'] . '" title="' . $nav['title'] . '">' . $nav['title'] . '</a>';
+				if ($end_item !== $nav) :
+					echo '<span>/</span>';
+				endif;
+			endforeach;
+			?>
+		</div>
+	<?php
+	}
+	?>
+	
 	<div class="container d-flex zhuige-copy-link justify-content-between">
 		<div class="zhuige-copyright">
 			<?php
@@ -167,24 +190,7 @@ $login_weixin = zhuige_theme_option('login_weixin_switch');
 
 	</div>
 
-	<?php
-	$footer_nav = zhuige_theme_option('footer_nav');
-	if (!empty($footer_nav)) {
-	?>
-		<div class="container zhuige-site-links pt-30 pb-30 d-flex align-content-center">
-			<?php
-			$end_item = end($footer_nav);
-			foreach ($footer_nav as $nav) :
-				echo '<a href="' . $nav['url'] . '" title="' . $nav['title'] . '">' . $nav['title'] . '</a>';
-				if ($end_item !== $nav) :
-					echo '<span>/</span>';
-				endif;
-			endforeach;
-			?>
-		</div>
-	<?php
-	}
-	?>
+	
 </footer>
 
 

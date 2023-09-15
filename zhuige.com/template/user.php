@@ -100,13 +100,13 @@ if (empty($cover)) {
 <div class="container pl-20 pr-20">
 	<div class="d-flex justify-content-center">
 
-		<article class="zhuige-user-page-list md-9">
+		<article class="zhuige-user-page-list md-9 pb-30">
 
 			<!-- <div class="zhuige-fourfold-list zhuige-resource-triple row d-flex flex-wrap mb-20 zhuige-list-container"> -->
 				<?php
 				if ($track == 'comment') {
 					$result = zhuige_theme_posts_user_comment($user_id, 0);
-					echo '<div class="zhuige-box row">';
+					echo '<div class="zhuige-box row pl-20 pr-20">';
 					echo $result['content'];
 					echo '</div>';
 				} else {
@@ -126,20 +126,22 @@ if (empty($cover)) {
 			?>
 				<div class="main-cont-block mb-20">
 					<div class="row zhuige-none-tips">
-						<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt=" " />
+						<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="not found" />
 						<p>暂无数据，随便逛逛...</p>
 					</div>
 				</div>
 			<?php
 			}
 			?>
+			
+			<?php if ($result['more']) { ?>
+				<div class="zhuige-list-more d-flex justify-content-center mt-20">
+					<a href="javascript:void(0)" class="zhuige-user-more-btn" data-track="<?php echo $track ?>" data-user_id="<?php echo $user_id ?>" title="更多">加载更多</a>
+				</div>
+			<?php } ?>
+			
 		</article>
 
-		<?php if ($result['more']) { ?>
-			<div class="zhuige-list-more d-flex justify-content-center mt-20">
-				<a href="javascript:void(0)" class="zhuige-user-more-btn" data-track="<?php echo $track ?>" data-user_id="<?php echo $user_id ?>" title="更多">加载更多</a>
-			</div>
-		<?php } ?>
 
 	</div>
 </div>

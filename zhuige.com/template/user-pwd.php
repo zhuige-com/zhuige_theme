@@ -27,6 +27,9 @@ get_header();
 					<p>
 						<a href="<?php echo home_url('/user-info'); ?>" title="">个人资料</a>
 					</p>
+					<p>
+						<a href="<?php echo home_url('/user-spend-log'); ?>" title="">消费记录</a>
+					</p>
 					<p class="menu-activ">
 						<a href="<?php echo home_url('/user-pwd'); ?>" title="">账户安全</a>
 					</p>

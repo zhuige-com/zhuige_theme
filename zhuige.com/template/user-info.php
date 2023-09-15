@@ -27,7 +27,7 @@ $weixin = get_user_meta($my_user_id, 'zhuige_theme_weixin', true);
 
 $user_email = $user->user_email;
 
-// $sign = get_user_meta($my_user_id, 'description', true);
+$sign = get_user_meta($my_user_id, 'description', true);
 $wx_code = get_user_meta($my_user_id, 'zhuige_theme_wx_code', true);
 $reward_code = get_user_meta($my_user_id, 'zhuige_theme_reward_code', true);
 
@@ -74,6 +74,9 @@ get_header();
 				<div class="zhuige-user-menu zhuige-box mb-20">
 					<p class="menu-activ">
 						<a href="<?php echo home_url('/user-info'); ?>" title="">个人资料</a>
+					</p>
+					<p>
+						<a href="<?php echo home_url('/user-spend-log'); ?>" title="">消费记录</a>
 					</p>
 					<p>
 						<a href="<?php echo home_url('/user-pwd'); ?>" title="">账户安全</a>

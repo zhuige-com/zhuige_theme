@@ -67,7 +67,7 @@ if (post_password_required()) {
     <!-- 无评论提示 -->
     <?php if (get_comment_count($post->ID)['all'] == 0) { ?>
         <div class="zhuige-none-tips">
-            <img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="picture loss" />
+            <img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="not found" />
             <p>暂无评论，你要说点什么吗？</p>
         </div>
     <?php } ?>

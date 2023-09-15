@@ -104,7 +104,7 @@ if (!$list_header) {
 	<input type="hidden" class="zhuige-theme-tag" value="<?php echo $cur_tag_id ?>" />
 
 	<!-- container md-12用于控制页面宽度，各类列表md-会有差异 -->
-	<div class="container pt-20 md-12">
+	<div class="container zhuige-arc-page pt-20 md-12">
 		<?php
 		$result = zhuige_theme_get_posts(0, ['cat' => $cur_cat_id, 'tag' => $cur_tag_id, 'author' => $cur_author_id]);
 		?>
@@ -130,7 +130,7 @@ if (!$list_header) {
 				?>
 					<div class="main-cont-block p-20 mb-20">
 						<div class="zhuige-none-tips">
-							<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt=" " />
+							<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="not found" />
 							<p>暂无数据，随便逛逛...</p>
 						</div>
 					</div>

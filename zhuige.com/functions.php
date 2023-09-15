@@ -4,6 +4,24 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once TEMPLATEPATH . '/vendor/autoload.php';
+
+use GuzzleHttp\Exception\RequestException;
+use WechatPay\GuzzleMiddleware\WechatPayMiddleware;
+use WechatPay\GuzzleMiddleware\Util\PemUtil;
+use GuzzleHttp\HandlerStack;
+
+if (!function_exists('str_starts_with')) {
+    function str_starts_with($haystack, $needle)
+    {
+        if ('' === $needle) {
+            return true;
+        }
+
+        return 0 === strpos($haystack, $needle);
+    }
+}
+
 /**
  * 追格主题
  * 文档：https://www.zhuige.com
@@ -12,11 +30,12 @@ if (!defined('ABSPATH')) {
 require_once TEMPLATEPATH . '/inc/codestar-framework/codestar-framework.php';
 require_once TEMPLATEPATH . '/inc/admin-options.php';
 require_once TEMPLATEPATH . '/inc/zhuige-market.php';
+require_once TEMPLATEPATH . '/inc/zhuige-aes-util.php';
 require_once TEMPLATEPATH . '/inc/zhuige-ajax.php';
 require_once TEMPLATEPATH . '/inc/zhuige-dashboard.php';
 require_once TEMPLATEPATH . '/inc/zhuige-user-column.php';
 require_once TEMPLATEPATH . '/inc/zhuige-user-property.php';
-require_once TEMPLATEPATH . '/inc/zhuige-plugins.php';
+//require_once TEMPLATEPATH . '/inc/zhuige-plugins.php';
 require_once TEMPLATEPATH . '/inc/zhuige-sql.php';
 
 
@@ -40,6 +59,7 @@ add_action('init',  function () {
     add_rewrite_rule('^user-info$', 'index.php?zhuige_page=user-info', 'top');
     add_rewrite_rule('^user-pwd$', 'index.php?zhuige_page=user-pwd', 'top');
     add_rewrite_rule('^user-reset$', 'index.php?zhuige_page=user-reset', 'top');
+    add_rewrite_rule('^user-spend-log$', 'index.php?zhuige_page=user-spend-log', 'top');
 
     add_rewrite_rule('^user/([^/]*)/([^/]*)\\.html$', 'index.php?zhuige_page=user&track=$matches[1]&user_slug=$matches[2]', 'top');
 
@@ -530,8 +550,43 @@ function zhuige_theme_seo_title()
     }
 
     $title = $site_title;
-    if (is_home()) {
-        $zhuige_page = get_query_var('zhuige_page');
+
+    $zhuige_page = get_query_var('zhuige_page');
+    $zhuige_plugin = get_query_var('zhuige_plugin');
+    if ($zhuige_plugin) {
+        if ($zhuige_plugin == 'resource') {
+            if ($zhuige_page == 'index') {
+                $resource_seo_home = zhuige_theme_resource_option('resource_seo_home');
+                if ($resource_seo_home && $resource_seo_home['title']) {
+                    $title = $resource_seo_home['title'];
+                }
+            } else if ($zhuige_page == 'detail') {
+                $resource_id = get_query_var('resource_id');
+                $post = get_post($resource_id);
+                if ($post) {
+                    $title = $post->post_title . '_' . $site_title;
+                }
+            } else if ($zhuige_page == 'cat') {
+                $cat_id = get_query_var('cat_id');
+                $term = get_term($cat_id, 'zt_resource_cat');
+                $title = $term->name . '_' . $site_title;
+            } else if ($zhuige_page == 'tag') {
+                $tag_id = get_query_var('tag_id');
+                $term = get_term($tag_id, 'zt_resource_tag');
+                $title = $term->name . '_' . $site_title;
+            } else if ($zhuige_page == 'search') {
+                $search = get_query_var('search');
+                $title = '搜索：' . urldecode($search) . '_' . $site_title;
+            }
+        } else if ($zhuige_plugin == 'vip') {
+            if ($zhuige_page == 'vip') {
+                $vip_seo_home = zhuige_theme_vip_option('vip_seo_home');
+                if ($vip_seo_home && $vip_seo_home['title']) {
+                    $title = $vip_seo_home['title'];
+                }
+            }
+        }
+    } else if (is_home()) {
         if ($zhuige_page == 'user') {
             $user_slug = get_query_var('user_slug');
             if ($user_slug) {
@@ -588,25 +643,63 @@ function zhuige_theme_seo_keywords()
         $keywords = $seo_home['keywords'];
     }
 
-    if (is_home()) {
-        $zhuige_page = get_query_var('zhuige_page');
-        if ($zhuige_page) {
-            if ($zhuige_page == 'user') {
-                $user_slug = get_query_var('user_slug');
-                if ($user_slug) {
-                    $user = get_user_by('slug', $user_slug);
-                    if ($user) {
-                        $nickname = get_user_meta($user->ID, 'nickname', true);
-                        $track = get_query_var('track');
-                        if ('like' == $track) {
-                            $keywords = $nickname . '的喜欢,' . $keywords;
-                        } else if ('favorite' == $track) {
-                            $keywords = $nickname . '的收藏,' . $keywords;
-                        } else if ('comment' == $track) {
-                            $keywords = $nickname . '的评论,' . $keywords;
-                        } else {
-                            $keywords = $nickname . ',' . $keywords;
-                        }
+    $zhuige_page = get_query_var('zhuige_page');
+    $zhuige_plugin = get_query_var('zhuige_plugin');
+    if ($zhuige_plugin) {
+        if ($zhuige_plugin == 'resource') {
+            if ($zhuige_page == 'index') {
+                $resource_seo_home = zhuige_theme_resource_option('resource_seo_home');
+                if ($resource_seo_home && $resource_seo_home['keywords']) {
+                    $keywords = $resource_seo_home['keywords'];
+                }
+            } else if ($zhuige_page == 'detail') {
+                $resource_id = get_query_var('resource_id');
+                $resource_tags = get_the_terms($resource_id, 'zt_resource_tag');
+                if ($resource_tags) {
+                    foreach ($resource_tags as $tag) {
+                        $tags[] = $tag->name;
+                    }
+                }
+                if (!empty($tags)) {
+                    $keywords = implode(',', $tags);
+                }
+            } else if ($zhuige_page == 'cat') {
+                $cat_id = get_query_var('cat_id');
+                $term = get_term($cat_id, 'zt_resource_cat');
+                $options = get_term_meta($cat_id, 'zhuige_category_options', true);
+                $keywords = (is_array($options) && !empty($options['keywords']) ? $options['keywords'] : $term->name);
+            } else if ($zhuige_page == 'tag') {
+                $tag_id = get_query_var('tag_id');
+                $term = get_term($tag_id, 'zt_resource_tag');
+                $keywords = $term->name . ',' . $keywords;
+            } else if ($zhuige_page == 'search') {
+                $search = get_query_var('search');
+                $keywords = urldecode($search) . ',' . $keywords;
+            }
+        } else if ($zhuige_plugin == 'vip') {
+            if ($zhuige_page == 'vip') {
+                $vip_seo_home = zhuige_theme_vip_option('vip_seo_home');
+                if ($vip_seo_home && $vip_seo_home['keywords']) {
+                    $keywords = $vip_seo_home['keywords'];
+                }
+            }
+        }
+    } else if (is_home()) {
+        if ($zhuige_page == 'user') {
+            $user_slug = get_query_var('user_slug');
+            if ($user_slug) {
+                $user = get_user_by('slug', $user_slug);
+                if ($user) {
+                    $nickname = get_user_meta($user->ID, 'nickname', true);
+                    $track = get_query_var('track');
+                    if ('like' == $track) {
+                        $keywords = $nickname . '的喜欢,' . $keywords;
+                    } else if ('favorite' == $track) {
+                        $keywords = $nickname . '的收藏,' . $keywords;
+                    } else if ('comment' == $track) {
+                        $keywords = $nickname . '的评论,' . $keywords;
+                    } else {
+                        $keywords = $nickname . ',' . $keywords;
                     }
                 }
             }
@@ -624,7 +717,7 @@ function zhuige_theme_seo_keywords()
         $query_obj = $wp_query->get_queried_object();
         $options = get_term_meta($query_obj->term_id, 'zhuige_post_tag_options', true);
         $keywords = (is_array($options) && !empty($options['keywords']) ? $options['keywords'] : $query_obj->name);
-    } else if (is_single()) {
+    } else if (is_singular()) {
         global $post;
         $tags = [];
         if ($post->post_type == 'post') {
@@ -662,8 +755,50 @@ function zhuige_theme_seo_description()
         $description = $seo_home['description'];
     }
 
-    if (is_home()) {
-        $zhuige_page = get_query_var('zhuige_page');
+    $zhuige_page = get_query_var('zhuige_page');
+    $zhuige_plugin = get_query_var('zhuige_plugin');
+    if ($zhuige_plugin) {
+        if ($zhuige_plugin == 'resource') {
+            if ($zhuige_page == 'index') {
+                $resource_seo_home = zhuige_theme_resource_option('resource_seo_home');
+                if ($resource_seo_home && $resource_seo_home['description']) {
+                    $description = $resource_seo_home['description'];
+                }
+            } else if ($zhuige_page == 'detail') {
+                $resource_id = get_query_var('resource_id');
+                $post = get_post($resource_id);
+                if ($post) {
+                    $description = html_entity_decode(wp_trim_words($post->post_content, 120, '...'));
+                }
+            } else if ($zhuige_page == 'cat') {
+                $cat_id = get_query_var('cat_id');
+                $term = get_term($cat_id, 'zt_resource_cat');
+                if ($term->description) {
+                    $description = $term->description;
+                } else {
+                    $description = '分类：' . $term->name . ' 下的资源';
+                }
+            } else if ($zhuige_page == 'tag') {
+                $tag_id = get_query_var('tag_id');
+                $term = get_term($tag_id, 'zt_resource_tag');
+                if ($term->description) {
+                    $description = $term->description;
+                } else {
+                    $description = '标签：' . $term->name . ' 下的资源';
+                }
+            } else if ($zhuige_page == 'search') {
+                $search = get_query_var('search');
+                $description = '在' . get_bloginfo('name') . '搜索：' . urldecode($search) . ' 的结果';
+            }
+        } else if ($zhuige_plugin == 'vip') {
+            if ($zhuige_page == 'vip') {
+                $vip_seo_home = zhuige_theme_vip_option('vip_seo_home');
+                if ($vip_seo_home && $vip_seo_home['description']) {
+                    $description = $vip_seo_home['description'];
+                }
+            }
+        }
+    } else if (is_home()) {
         if ($zhuige_page == 'user') {
             $user_slug = get_query_var('user_slug');
             if ($user_slug) {
@@ -702,10 +837,10 @@ function zhuige_theme_seo_description()
         }
     } else if (is_single()) {
         global $post;
-        $description =  html_entity_decode(wp_trim_words($post->post_content, 120, '...'));
+        $description = html_entity_decode(wp_trim_words($post->post_content, 120, '...'));
     } else if (is_page()) {
         global $post;
-        $description =  html_entity_decode(wp_trim_words($post->post_content, 120, '...'));
+        $description = html_entity_decode(wp_trim_words($post->post_content, 120, '...'));
     }
 
     if ($description) {
@@ -756,13 +891,15 @@ function zhuige_theme_comment_list($comment, $args, $depth)
         }
         ?>
         <div class="user-avatar mr-10">
-            <a href="<?php echo zhuige_theme_user_site($comment->user_id); ?>" title="<?php echo $nickname ?>">
+            <a href="<?php echo zhuige_theme_user_site($comment->user_id); ?>" title="<?php echo $nickname ?>" target="_blank">
                 <?php echo zhuige_user_avatar($comment->user_id); ?>
             </a>
         </div>
         <div class="user-info">
             <h6 class="d-flex align-items-center mb-10">
-                <a href="<?php echo zhuige_theme_user_site($comment->user_id); ?>" title="<?php echo $nickname ?>"><?php echo $nickname ?></a>
+                <a class="mr-10" href="<?php echo zhuige_theme_user_site($comment->user_id); ?>" title="<?php echo $nickname ?>" target="_blank">
+                    <?php echo $nickname ?>
+                </a>
                 <?php
                 $comment_parent = false;
                 if ($comment->comment_parent) {
@@ -777,8 +914,16 @@ function zhuige_theme_comment_list($comment, $args, $depth)
                     }
                 ?>
                     &nbsp;回复&nbsp;
-                    <a href="<?php echo zhuige_theme_user_site($comment_parent->user_id); ?>" title="<?php echo $nickname_parent ?>"><?php echo $nickname_parent ?></a>
+                    <a href="<?php echo zhuige_theme_user_site($comment_parent->user_id); ?>" title="<?php echo $nickname_parent ?>" target="_blank">
+                        <?php echo $nickname_parent ?>
+                    </a>
                 <?php
+                } else {
+                    global $post;
+                    if ($post->post_type == 'zt_resource') {
+                        $score = get_comment_meta($comment->comment_ID, 'zhuige_theme_resource_score', true);
+                        echo zhuige_theme_reource_score_string($score);
+                    }
                 }
                 ?>
             </h6>
@@ -1126,7 +1271,7 @@ function zhuige_theme_posts_user_like_fav($user_id, $offset, $t = 'like')
     }
 
     $args = [
-        'post_type' => ['post', 'zhuige_product'],
+        'post_type' => ['post', 'zt_resource'],
         'post__in' => $post_ids,
         'orderby' => 'post__in',
         'ignore_sticky_posts' => 1,
@@ -1138,7 +1283,7 @@ function zhuige_theme_posts_user_like_fav($user_id, $offset, $t = 'like')
     $content = '';
     foreach ($result as $post) {
         // <!-- 文章 -->
-        if ($post->post_type == 'post') {
+        if ($post->post_type == 'post' || $post->post_type == 'zt_resource') {
             $item = zhuige_theme_format_post($post, true);
 
             $content .= '<div class="zhuige-list align-items-center d-flex flex-wrap p-20 mb-20 zhuige-post-for-ajax-count">';
@@ -1146,11 +1291,18 @@ function zhuige_theme_posts_user_like_fav($user_id, $offset, $t = 'like')
             $content .= '<div class="zhuige-list-img relative">';
 
             // 基础角标
-            if ($item['badge']) {
-                $content .= '<div class="zhuige-list-mark absolute d-flex">';
-                $content .= '<span>' . $item['badge'] . '</span>';
-                $content .= '</div>';
+            // if ($item['badge']) {
+            //     $content .= '<div class="zhuige-list-mark absolute d-flex">';
+            //     $content .= '<span>' . $item['badge'] . '</span>';
+            //     $content .= '</div>';
+            // }
+            $content .= '<div class="zhuige-list-mark absolute d-flex">';
+            if ($post->post_type == 'post') {
+                $content .= '<span>资讯</span>';
+            } else if ($post->post_type == 'zt_resource') {
+                $content .= '<span style="background:#FF8600;">资源</span>';
             }
+            $content .= '</div>';
 
             // 封面
             $content .= '<a class="zhuige-list-cover" href="' . $item['link'] . '">';
@@ -1236,19 +1388,28 @@ function zhuige_theme_posts_user_comment($user_id, $offset = 0)
         $post = get_post($comment->comment_post_ID);
 
         // <!-- 文章 -->
-        if ($post->post_type == 'post') {
+        if ($post->post_type == 'post' || $post->post_type == 'zt_resource') {
             $item = zhuige_theme_format_post($post, true);
 
-            $content .= '<div class="zhuige-list align-items-center d-flex flex-wrap p-20 mb-20 zhuige-post-for-ajax-count">';
+            $content .= '<div class="zhuige-list">';
+            $content .= '<div class="zhuige-list-bg align-items-center d-flex flex-wrap p-20 zhuige-post-for-ajax-count">';
 
             $content .= '<div class="zhuige-list-img relative">';
 
             // 基础角标
-            if ($item['badge']) {
-                $content .= '<div class="zhuige-list-mark absolute d-flex">';
-                $content .= '<span>' . $item['badge'] . '</span>';
-                $content .= '</div>';
+            // if ($item['badge']) {
+            //     $content .= '<div class="zhuige-list-mark absolute d-flex">';
+            //     $content .= '<span>' . $item['badge'] . '</span>';
+            //     $content .= '</div>';
+            // }
+            $content .= '<div class="zhuige-list-mark absolute d-flex">';
+            if ($post->post_type == 'post') {
+                $content .= '<span>资讯</span>';
+            } else if ($post->post_type == 'zt_resource') {
+                $content .= '<span style="background:#FF8600;">资源</span>';
             }
+            $content .= '</div>';
+
 
             // 封面
             $content .= '<a class="zhuige-list-cover" href="' . $item['link'] . '">';
@@ -1284,6 +1445,7 @@ function zhuige_theme_posts_user_comment($user_id, $offset = 0)
             $content .= '</div>';
             // $content .= '<text>' . $item['time'] . '</text>';
             $content .= '<text>浏览 ' . $item['view_count'] . '</text>';
+            $content .= '</div>';
             $content .= '</div>';
             $content .= '</div>';
             $content .= '</div>';
@@ -1342,17 +1504,244 @@ CSF::createSection($zhuige_category_options, array(
 /**
  * 在评论列表中 增加积分
  */
-add_filter('manage_edit-comments_columns', 'my_comments_columns');
-add_action('manage_comments_custom_column', 'output_my_comments_columns', 10, 2);
-function my_comments_columns($columns)
+add_filter('manage_edit-comments_columns', 'zhuige_theme_comments_columns');
+add_action('manage_comments_custom_column', 'output_zhuige_theme_comments_columns', 10, 2);
+function zhuige_theme_comments_columns($columns)
 {
     $columns['zhuige_theme_resource_score'] = '产品打分';
     return $columns;
 }
 
-function output_my_comments_columns($column_name, $column_id)
+function output_zhuige_theme_comments_columns($column_name, $column_id)
 {
     if ($column_name == 'zhuige_theme_resource_score') {
         echo get_comment_meta($column_id, 'zhuige_theme_resource_score', true);
     }
+}
+
+/**
+ * 生成微信支付二维码
+ */
+function zhuige_theme_gen_weixin_qrcode($amount, $description, $trade_no, $cb_url)
+{
+    $weixin_pay = zhuige_theme_option('weixin_pay');
+    if (!is_array($weixin_pay)) {
+        return false;
+    }
+
+    $appid = isset($weixin_pay['appid']) ? $weixin_pay['appid'] : '';
+    $mchid = isset($weixin_pay['mchid']) ? $weixin_pay['mchid'] : '';
+    $key = isset($weixin_pay['key']) ? $weixin_pay['key'] : '';
+    $private_serial = isset($weixin_pay['private_serial']) ? $weixin_pay['private_serial'] : '';
+    $public_serial = isset($weixin_pay['public_serial']) ? $weixin_pay['public_serial'] : '';
+    $private_cert = isset($weixin_pay['private_cert']) ? $weixin_pay['private_cert'] : '';
+    $public_cert = isset($weixin_pay['public_cert']) ? $weixin_pay['public_cert'] : '';
+    $private_cert = TEMPLATEPATH . '/cert/pro_key.pem';
+    $public_cert = TEMPLATEPATH . '/cert/pingtai.pem';
+
+    if (empty($appid) || empty($mchid) || empty($key) || empty($private_serial) || empty($public_serial) || empty($private_cert) || empty($public_cert)) {
+        return false;
+    }
+
+    // 商户相关配置
+    $merchantId = $mchid; // 商户号
+    $merchantSerialNumber = $private_serial; // 商户API证书序列号
+    // "D:\www\test.wordpress1.com/wp-content/themes/zhuige.com/cert/pro_key.pem"
+    $merchantPrivateKey = PemUtil::loadPrivateKey($private_cert); // 商户私钥文件路径
+
+    // 微信支付平台配置
+    $wechatpayCertificate = PemUtil::loadCertificate($public_cert); // 微信支付平台证书文件路径
+
+    // 构造一个WechatPayMiddleware
+    $wechatpayMiddleware = WechatPayMiddleware::builder()
+        ->withMerchant($merchantId, $merchantSerialNumber, $merchantPrivateKey) // 传入商户相关配置
+        ->withWechatPay([$wechatpayCertificate]) // 可传入多个微信支付平台证书，参数类型为array
+        ->build();
+
+    // 将WechatPayMiddleware添加到Guzzle的HandlerStack中
+    $stack = HandlerStack::create();
+    $stack->push($wechatpayMiddleware, 'wechatpay');
+
+    // 创建Guzzle HTTP Client时，将HandlerStack传入，接下来，正常使用Guzzle发起API请求，WechatPayMiddleware会自动地处理签名和验签
+    $client = new \GuzzleHttp\Client(['handler' => $stack]);
+    // $client->setDefaultOption('verify', false);
+    // $client->setDefaultOption('headers', array('verify' => false));
+
+    try {
+        $resp = $client->request(
+            'POST',
+            'https://api.mch.weixin.qq.com/v3/pay/transactions/native', //请求URL
+            [
+                // JSON请求体
+                'json' => [
+                    // "time_expire" => "2018-06-08T10:34:56+08:00",
+                    "amount" => [
+                        "total" => $amount,
+                        "currency" => "CNY",
+                    ],
+                    "mchid" => $mchid,
+                    "description" => $description,
+                    "notify_url" => $cb_url,
+                    // "notify_url" => rest_url('zhuige_theme/weixin_vip_notify'),
+                    "out_trade_no" => $trade_no,
+                    // "goods_tag" => "WXG",
+                    "appid" => $appid,
+                    "attach" => '',
+                    // "detail" => [
+                    // 	"invoice_id" => "wx123",
+                    // 	"goods_detail" => [
+                    // 		[
+                    // 			"goods_name" => "iPhoneX 256G",
+                    // 			"wechatpay_goods_id" => "1001",
+                    // 			"quantity" => 1,
+                    // 			"merchant_goods_id" => "商品编码",
+                    // 			"unit_price" => 828800,
+                    // 		],
+                    // 		[
+                    // 			"goods_name" => "iPhoneX 256G",
+                    // 			"wechatpay_goods_id" => "1001",
+                    // 			"quantity" => 1,
+                    // 			"merchant_goods_id" => "商品编码",
+                    // 			"unit_price" => 828800,
+                    // 		],
+                    // 	],
+                    // 	"cost_price" => 608800,
+                    // ],
+                    // "scene_info" => [
+                    // 	"store_info" => [
+                    // 		"address" => "广东省深圳市南山区科技中一道10000号",
+                    // 		"area_code" => "440305",
+                    // 		"name" => "腾讯大厦分店",
+                    // 		"id" => "0001",
+                    // 	],
+                    // 	"device_id" => "013467007045764",
+                    // 	"payer_client_ip" => "14.23.150.211",
+                    // ]
+                ],
+                'headers' => ['Accept' => 'application/json']
+            ]
+        );
+        $statusCode = $resp->getStatusCode();
+        if ($statusCode == 200) { //处理成功
+            // echo "success,return body = " . $resp->getBody()->getContents() . "\n";
+            $content = $resp->getBody()->getContents();
+            $json = json_decode($content, true);
+            if (isset($json['code_url'])) {
+                return $json['code_url'];
+            } else {
+                return false;
+            }
+        } else {
+            // return "success";
+            return false;
+        }
+        // else if ($statusCode == 204) { //处理成功，无返回Body
+        // 	echo "success";
+        // }
+    } catch (RequestException $e) {
+        // 进行错误处理
+        $msg = $e->getMessage() . "\n";
+        if ($e->hasResponse()) {
+            $msg .= "failed,resp code = " . $e->getResponse()->getStatusCode() . " return body = " . $e->getResponse()->getBody() . "\n";
+        }
+        return $msg;
+        // return false;
+    }
+}
+
+/**
+ * 消费记录
+ */
+function zhuige_theme_spend_log_output($user_id, $offset = 0)
+{
+    $per_page = 10;
+
+    global $wpdb;
+    $table_spend_log = $wpdb->prefix . 'zhuige_theme_spend_log';
+    $sql = $wpdb->prepare("SELECT * FROM `$table_spend_log` WHERE `user_id`=%d ORDER BY `id` DESC LIMIT %d OFFSET %d", $user_id, $per_page, $offset);
+    $result = $wpdb->get_results($sql, ARRAY_A);
+    if (empty($result)) {
+        return ['content' => '', 'more' => 0,];
+    }
+
+    $content = '';
+    foreach ($result as $log) {
+        $content .= '<div class="zhuige-order-list">';
+
+        $content .= '<div class="zhuige-list-bg align-items-center d-flex justify-content-between p-20">';
+
+        $content .= '<div class="zhuige-list align-items-center d-flex">';
+
+        // 封面图/头像 -- start
+        $content .= '<div class="zhuige-list-img relative">';
+
+        // 封面角标/vip -- start
+        $content .= '<div class="zhuige-list-mark absolute d-flex">';
+
+        $content .= '<span class="order-vip">';
+        $link = '';
+        if ($log['type'] == 'post') {
+            $content .= '资讯';
+            $link = get_permalink($log['extra']);
+        } else if ($log['type'] == 'resource') {
+            $content .= '资源';
+            $link = get_permalink($log['extra']);
+        } else if ($log['type'] == 'vip') {
+            $content .= 'VIP';
+            $link = home_url('/vip');
+        }
+        $content .= '</span>';
+
+        $content .= '</div>';
+        // 封面角标/vip -- end
+
+        // 封面
+        $content .= '<a class="zhuige-list-cover" href="' . $link . '" target="_blank">';
+        $thumb = '';
+        if ($log['type'] == 'post' || $log['type'] == 'resource') {
+            $post = get_post($log['extra']);
+            $thumb = zhuige_theme_thumbnail_src_d($post->ID, $post->post_content);
+        } else if ($log['type'] == 'vip') {
+
+        }
+        if (empty($thumb)) {
+            $thumb = ZHUIGE_THEME_URL . '/addons/vip/images/default_thumb.png';
+        }
+        $content .= '<img alt="cover" src="' . $thumb . '">';
+        $content .= '</a>';
+
+        $content .= '</div>';
+        // 封面图/头像 -- end
+
+        // 文本
+        $content .= '<div class="zhuige-list-text">';
+        $content .= '<h5 class="text-title set-top mb-10">';
+        $content .= '<a href="' . $link . '" target="_blank" title="' . $log['title'] . '">' . $log['title'] . '</a>';
+        $content .= '</h5>';
+
+        $content .= '<div class="text-info">';
+        $content .= '<div class="data-info d-flex align-items-center">';
+        $content .= '<text>' . date('Y-m-d H:i:s', $log['createtime']) . '</text>';
+        $content .= '</div>';
+        $content .= '</div>';
+		
+		$content .= '<div class="zhuige-order-pay">';
+		$content .= '<span>实付</span>';
+		$content .= '<cite>￥</cite>';
+		$content .= '<text>' . $log['amount'] . '</text>';
+		$content .= '</div>';		
+		
+        $content .= '</div>';		
+        $content .= '</div>';
+
+        $content .= '<div class="zhuige-order-pay">';
+        $content .= '<span>实付</span>';
+        $content .= '<cite>￥</cite>';
+        $content .= '<text>' . $log['amount'] . '</text>';
+        $content .= '</div>';
+        $content .= '</div>';
+        $content .= '</div>';
+    }
+
+    return ['content' => $content, 'more' => (count($result) >= $per_page)];
 }

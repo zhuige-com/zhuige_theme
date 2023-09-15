@@ -507,14 +507,16 @@ function zhuige_theme_event()
             wp_send_json_error('缺少参数');
         }
 
+        $parent = isset($_POST["parent"]) ? (int)($_POST["parent"]) : 0;
+
         global $wpdb;
         $table_comments = $wpdb->prefix . 'comments';
 
         $score = isset($_POST["score"]) ? (int)($_POST["score"]) : 0;
-        if ($score) {
+        if ($parent == 0 && $score) {
             $comment_count = $wpdb->get_var(
                 // $wpdb->prepare(
-                "SELECT COUNT(`comment_ID`) FROM `$table_comments` WHERE `comment_post_ID`=$post_id AND `user_id`=$my_user_id"
+                "SELECT COUNT(`comment_ID`) FROM `$table_comments` WHERE `comment_post_ID`=$post_id AND `comment_parent`=0 AND `user_id`=$my_user_id"
                 // )
             );
             if ($comment_count) {
@@ -527,8 +529,6 @@ function zhuige_theme_event()
             wp_send_json_error('请输入评论内容');
         }
 
-        $parent = isset($_POST["parent"]) ? (int)($_POST["parent"]) : 0;
-
         $comment_approved = 0; // 必须人工审核，以防垃圾信息
         $comment_id = wp_insert_comment([
             'comment_post_ID' => $post_id,
@@ -539,7 +539,7 @@ function zhuige_theme_event()
         ]);
 
         if ($comment_id) {
-            if ($score) {
+            if ($parent == 0 && $score) {
                 add_comment_meta($comment_id, 'zhuige_theme_resource_score', $score, true);
             }
             wp_send_json_success();
@@ -664,6 +664,16 @@ function zhuige_theme_event()
             wp_send_json_error('缺少参数');
         }
 
+        wp_send_json_success($result);
+    } else if ($action == 'get_spend_log') { // 获取消费记录
+        $my_user_id = get_current_user_id();
+        if (!$my_user_id) {
+            wp_send_json_error(['error' => 'login', 'msg' => '尚未登录']);
+        }
+
+        $offset = isset($_POST["offset"]) ? (int)($_POST["offset"]) : 0;
+
+        $result = zhuige_theme_spend_log_output($my_user_id, $offset);
         wp_send_json_success($result);
     }
 

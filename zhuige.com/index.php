@@ -95,7 +95,7 @@ $hot_words = explode(',', $home_header['hot_words']);
 
 				<!-- 热门资讯 -->
 				<div class="zhuige-box p-20 mb-20 zhuige-list-container">
-					<h1 class="d-flex align-items-center justify-content-between pb-20">
+					<h1 class="d-flex align-items-center pb-20 pt-10 justify-content-between flex-nowrap-md flex-wrap-xs">
 						<text>热门资讯</text>
 						<p class="zhuige-list-type">
 							<a class="active" href="<?php echo home_url() ?>" title="">全部</a>
@@ -115,7 +115,6 @@ $hot_words = explode(',', $home_header['hot_words']);
 						</p>
 					</h1>
 
-
 					<?php
 					echo zhuige_theme_get_sticky_posts();
 
@@ -130,7 +129,7 @@ $hot_words = explode(',', $home_header['hot_words']);
 					<!-- 数据为空 -->
 					<div class="main-cont-block p-20 mb-20 zhuige-theme-no-data" style="display:none;">
 						<div class="zhuige-none-tips">
-							<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt=" " />
+							<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="not found" />
 							<p>暂无数据，随便逛逛...</p>
 						</div>
 					</div>

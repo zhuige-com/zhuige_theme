@@ -89,7 +89,7 @@ if (!$list_header) {
 				if (!$result['content']) {
 				?>
 					<div class="zhuige-none-tips">
-						<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt=" " />
+						<img src="<?php echo ZHUIGE_THEME_URL . '/images/not_found.png' ?>" alt="not found" />
 						<p>暂无数据，随便逛逛...</p>
 					</div>
 				<?php } ?>

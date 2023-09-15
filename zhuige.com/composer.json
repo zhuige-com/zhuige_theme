@@ -1,0 +1,7 @@
+{
+    "require": {
+        "wechatpay/wechatpay-guzzle-middleware": "^0.2.2",
+        "guzzlehttp/guzzle": "^7.7",
+        "endroid/qr-code": "^4.3"
+    }
+}

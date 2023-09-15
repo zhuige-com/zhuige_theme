@@ -706,9 +706,21 @@ CSF::createSection($prefix, array(
                 ),
 
                 array(
-                    'id'    => 'pub_serial',
+                    'id'    => 'public_serial',
                     'type'  => 'text',
                     'title' => '公钥序列号',
+                ),
+
+                array(
+                    'id'    => 'private_cert',
+                    'type'  => 'upload',
+                    'title' => '商户私钥文件',
+                ),
+                
+                array(
+                    'id'    => 'public_cert',
+                    'type'  => 'upload',
+                    'title' => '微信支付证书',
                 ),
             ),
         ),

@@ -4,7 +4,7 @@ Theme URI: https://www.zhuige.com
 Author: zhuige.com
 Author URI: https://www.zhuige.com
 Description: 追格主题
-Version: 1.0.0
+Version: 1.2.0
 Requires PHP: 7.2
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -419,11 +419,11 @@ nav .zhuige-nav-list .secondary li>a {
 }
 
 footer {
-	background: #F6F9FC;
+	background: #1A1D24;
 }
 
 footer .container {
-	padding: 20px 0;
+	padding: 20px 30px;
 }
 
 .zhuige-main-footer .column {
@@ -478,8 +478,7 @@ footer .container {
 }
 
 .zhuige-site-links {
-	/* border-top: 1px solid #292D33; */
-	border-top: 1px solid #DDDDDD;
+	padding-bottom: 0!important;
 }
 
 .zhuige-site-links span,
@@ -488,11 +487,23 @@ footer .container {
 	margin-right: 12px;
 	white-space: nowrap;
 }
-
+.zhuige-site-links a:hover {
+	color: #FFFFFF;
+}
 .zhuige-foot-link {}
 
 .zhuige-copy-link {
+	color: #D8D8D8;
 	align-items: baseline;
+}
+.zhuige-copyright, .zhuige-copyright text {
+	color: #9A9B9D;
+}
+.zhuige-copyright text a, .zhuige-foot-link a {
+	color: #9A9B9D;
+}
+.zhuige-copyright text a:hover, .zhuige-foot-link a:hover {
+	color: #FFFFFF;		
 }
 
 /*** 主搜索区 ***/
@@ -592,7 +603,7 @@ footer .container {
 	line-height: 50px;
 	padding: 0 20px;
 	color: #999999;
-	background: #FFFFFF;
+	background: #1173EB;
 	border-radius: 0 25px 25px 0;
 }
 
@@ -603,7 +614,7 @@ footer .container {
 	background-image: url(images/search_gy.png);
 	background-size: 100% auto;
 	background-repeat: no-repeat;
-	background-position: 0 -50px;
+	background-position: 0 0;
 }
 
 .zhuige-search-form a:hover {
@@ -749,14 +760,13 @@ footer .container {
 }
 
 .zhuige-list-cover:hover img {
-	transform: scale(1.02);
+	transform: scale(1.1);
 }
 
 .zhuige-list-mark {
-	top: -3px;
-	left: -5px;
+	top: 0px;
+	left: -6px;
 	z-index: 9;
-	transform: scale(.8);
 }
 
 .zhuige-list-mark span {
@@ -767,18 +777,24 @@ footer .container {
 	background: #1173EB;
 	color: #FFFFFF;
 	font-size: 12px;
-	font-weight: 300;
+	font-weight: 400;
 }
-
+.zhuige-list-bg {
+	margin:0 -20px 0;
+}
+.zhuige-list-bg:hover {
+	background: #fafafa;
+	transition: all 0.3s ease;
+}
 .zhuige-list-img cite {
 	height: 24px;
 	line-height: 24px;
-	border-radius: 0 0 4px 4px;
+	border-radius: 4px 0 4px 0;
 	padding: 0 10px;
 	background: #FF8600;
 	color: #FFFFFF;
 	font-size: 12px;
-	font-weight: 300;
+	font-weight: 400;
 	margin-left: 6px;
 }
 
@@ -816,6 +832,7 @@ footer .container {
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
+	padding: 0 2px;	
 }
 
 .zhuige-list-text h5.set-top span {
@@ -844,7 +861,9 @@ footer .container {
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 }
-
+.zhuige-user-page-list .zhuige-list-text .text-info {
+	padding: 0 2px;	
+}
 .sub-title {
 	line-height: 1.8em;
 	font-size: 14px;
@@ -892,8 +911,11 @@ footer .container {
 
 .zhuige-user .user-info {
 	margin: 0 6px;
+	overflow: hidden;
 }
-
+.data-info .zhuige-user .user-info {
+	margin: 0 0 0 6px;
+}
 .zhuige-user .user-info a {
 	font-size: 12px;
 	color: #7f7f7f;
@@ -918,6 +940,8 @@ footer .container {
 	font-size: 12px;
 	color: #7f7f7f;
 	white-space: nowrap;
+	height: 1em;
+	line-height: 1em;
 }
 
 .data-info>text::after {
@@ -1025,7 +1049,9 @@ footer .container {
 	font-weight: 500;
 	color: #FF8600;
 }
-
+.price-info text.price-free {
+	font-size: 16px;
+}
 .price-info span {
 	font-size: 12px;
 	color: #FF8600;
@@ -1131,6 +1157,7 @@ footer .container {
 }
 
 .zhuige-fourfold-list .sub-title {
+	height: 5.2em;
 	border-radius: 4px;
 	background: #FBFBFB;
 	color: #AAAAAA;
@@ -1264,13 +1291,13 @@ footer .container {
 .zhuige-advert-text div {}
 
 .zhuige-advert-text div a {
-	height: 40px;
-	line-height: 40px;
+	height: 46px;
+	line-height: 46px;
 	background: #FFFFFF;
 	color: #7F7F7F;
 	font-size: 14px;
 	width: 180px;
-	border-radius: 40px;
+	border-radius: 46px;
 	text-align: center;
 	border: 1px solid #DDDDDD;
 }
@@ -1327,7 +1354,9 @@ footer .container {
 	color: #FFFFFF;
 	border-color: #1173EB;
 }
-
+.zhuige-advert-side-cover .zhuige-advert-text div a:nth-child(1):hover {
+	opacity: .8;
+}
 /* 广告组  通栏背景，居中标题，文字，按钮 */
 .zhuige-advert-text-center {
 	text-align: center;
@@ -1685,13 +1714,13 @@ footer .container {
 
 /* 资源分类侧边栏 */
 .zhuige-resource-set-group {
-	border-bottom: 1px solid #DDDDDD;
-	margin-bottom: 10px;
+	border-top: 1px solid #DDDDDD;
+	padding-top: 10px;
 }
 
-.zhuige-resource-set-group:last-of-type {
+.zhuige-resource-set-group:first-of-type {
 	border: none;
-	margin: 0;
+	padding: 0;
 }
 
 .zhuige-resource-set-group h2 {
@@ -1750,7 +1779,7 @@ footer .container {
 }
 
 .zhuige-resource-set-tags {
-	padding-top: 10px;
+	padding: 10px 0;
 }
 
 .zhuige-resource-set-tags a {
@@ -1815,6 +1844,7 @@ footer .container {
 	height: 36px;
 	line-height: 36px;
 	border-radius: 6px 0 0 6px;
+	padding: 0 10px;
 }
 
 .zhuige-resource-opt .zhuige-search-form a {
@@ -1827,14 +1857,14 @@ footer .container {
 .zhuige-resource-opt .zhuige-search-form a span {
 	height: 36px;
 	width: 36px;
-	background-position: 0 -36px;
+	background-position: 0 0;
 }
 
 .zhuige-resource-opt .zhuige-search-form a:hover span {
 	background-position: 0 0px;
 }
-
-.zhuige-resource-result .zhuige-box:hover {
+.zhuige-resource-base-list .zhuige-box:hover, .zhuige-resource-result .zhuige-box:hover {
+	transition: all 0.3s ease;
 	background: #FAFAFA;
 }
 
@@ -1889,12 +1919,12 @@ footer .container {
 	border-color: #1273EB;
 }
 
-.zhuige-resource-triple .zhuige-list:nth-child(3n) {
-	margin-right: 0;
-}
-
 .zhuige-resource-triple .zhuige-list:nth-child(4n) {
 	margin-right: 1%;
+}
+
+.zhuige-resource-triple .zhuige-list:nth-child(3n) {
+	margin-right: 0;
 }
 
 /* 通栏模块 */
@@ -1999,9 +2029,9 @@ footer .container {
 }
 
 .zhuige-intro-module div:hover {
-	transform: translateY(-4px);
-	transition: all 0.3s ease;
-}
+transform: translateY(-4px);
+	box-shadow: 0 10px 18px -8px rgba(79, 125, 183, .3);
+	transition: all 0.3s ease;}
 
 .zhuige-intro-module img {
 	height: 70px;
@@ -2018,6 +2048,7 @@ footer .container {
 	font-size: 14px;
 	color: #777777;
 	line-height: 1.8em;
+	white-space: nowrap;
 }
 
 .zhuige-vip-user {
@@ -2069,7 +2100,12 @@ footer .container {
 .zhuige-vip-goods {
 	background: #FFFFFF;
 	border-radius: 8px;
-	/* border: 1px solid #E7E7E7; */
+	transition: all 0.3s ease;
+}
+.zhuige-vip-goods:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 10px 16px -9px rgba(79, 125, 183, .3);
+	transition: all 0.3s ease;
 }
 
 .zhuige-vip-goods-cover {
@@ -2102,7 +2138,7 @@ footer .container {
 	background: #FF8600;
 	color: #FFFFFF;
 	font-size: 12px;
-	font-weight: 300;
+	font-weight: 400;
 	top: 0;
 	right: 0;
 	z-index: 3;
@@ -2139,24 +2175,29 @@ footer .container {
 
 .zhuige-vip-goods-info p a {
 	display: block;
-	height: 36px;
-	line-height: 36px;
+	height: 40px;
+	line-height: 40px;
 	font-size: 12px;
-	border: 1px solid #FF8600;
-	background: #FF8600;
-	border-radius: 36px;
+	border: 1px solid #DDDDDD;
+	background: #FFFFFF;
+	border-radius: 40px;
 	text-align: center;
-	color: #FFFFFF;
+	color: #333333;
 	margin-bottom: 10px;
 }
 
-.zhuige-vip-goods-info p a:hover {
-	background: #feb432;
-	border-color: #feb432;
-	color: #EEEEEE;
+.zhuige-vip-type-recommend .zhuige-vip-goods-info p a {
+	background: #FF8600;
+	border-color: #FF8600;
+	color: #FFFFFF;	
 }
 
-.zhuige-vip-goods-intro {}
+.zhuige-vip-goods-info p a:hover, .zhuige-vip-goods-intro .zhuige-vip-goods-info p a:hover {
+	background: #feb432;
+	border-color: #feb432;
+	color: #FFFFFF;
+}
+
 
 .zhuige-vip-goods-intro h6 {
 	margin: 0 10px;
@@ -2285,10 +2326,13 @@ footer .container {
 .zhuige-user-menu p.menu-activ {
 	background: #F7F9FC;
 }
-
+.zhuige-user-menu p a {
+	font-size: 14px;
+	white-space: nowrap;
+}
 .zhuige-user-menu p.menu-activ a {
 	font-weight: 500;
-	font-size: 14px;
+	color: #2C70DB;
 }
 
 .zhuige-uc .zhuige-box {
@@ -2625,32 +2669,33 @@ footer .container {
 }
 
 .zhuige-order .zhuige-order-pay span {
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
 	color: #7f7f7f;
 
 }
 
 .zhuige-order-list {
-	padding: 20px 0;
 	border-bottom: 1px dotted #DDDDDD;
-}
-
-.zhuige-order-list:first-child {
-	padding-top: 0;
 }
 
 .zhuige-order-list:last-child {
 	border: none;
 	padding-bottom: 0;
 }
-
+.zhuige-order-list .zhuige-list-mark {
+	left: 0;
+}
 .zhuige-order-list .order-res {
 	background: #F59A23;
 }
 
 .zhuige-order-list .order-vip {
 	background: #B0A492;
+}
+
+.zhuige-order .zhuige-list .zhuige-list-text > .zhuige-order-pay {
+	display: none;
 }
 
 .zhuige-none-tip {
@@ -2728,13 +2773,36 @@ footer .container {
 .zhuige-user-page-list {
 	width: 100%;
 }
-
+.zhuige-user-page-list .zhuige-list {
+	border-bottom: 1px solid #EEEEEE;
+}
+.zhuige-user-page-list .zhuige-list:last-of-type {
+	border: none;
+}
 .zhuige-user-page-list .zhuige-list-text h5.text-title a {
-	font-size: 14px;
+	font-size: 16px;
+}
+.zhuige-user-page-list .zhuige-user {
+	position: relative;
+	margin-right: 16px;
+}
+.zhuige-user-page-list .zhuige-user::after {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+	width: 3px;
+	background: #7f7f7f;
+	height: 3px;
+	top: 8px;
+	right: -10px;
 }
 
 .zhuige-user-page-list .sub-title a {
-	font-size: 12px;
+	font-size: 14px;
+}
+
+.zhuige-user-page-list .zhuige-list-mark {
+	left: 0;
 }
 
 /* 详情内容导航 */
@@ -2923,7 +2991,7 @@ footer .container {
 .zhuige-view-article p {
 	margin-block-start: 1em;
 	margin-block-end: 1em;
-	line-height: 1.8em;
+	line-height: 2.5em;
 	font-size: 14px;
 	word-break: break-all;
 }
@@ -3263,9 +3331,12 @@ footer .container {
 	color: #FFFFFF;
 	text-align: center;
 	line-height: 70px;
-	font-size: 12px;
+	font-size: 14px;
 	width: 14%;
 	border-radius: 0 8px 8px 0;
+}
+.zhuige-comment-input a:hover {
+	opacity: .8;
 }
 
 .zhuige-comment-login {
@@ -3339,10 +3410,23 @@ footer .container {
 }
 
 .zhuige-download p strong {
-	width: 100px;
-	font-size: 14px;
+	width: 70%;
+	font-size: 13px;
+	white-space: nowrap;
 	font-weight: 400;
 	color: #7F7F7F;
+}
+.zhuige-download p text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.zhuige-download-info p strong {
+	width: 40%;
+	overflow: hidden;
+}
+.zhuige-download-info p text {
+	width: 60%;
 }
 
 .zhuige-download p a {
@@ -3415,7 +3499,9 @@ footer .container {
 	margin: 0 4px;
 }
 
-.zhuige-download .download-tips {}
+.zhuige-download .download-tips label {
+	margin-left: 6px;
+}
 
 .zhuige-download p.justify-content-between text {
 	font-size: 20px;
@@ -3471,20 +3557,24 @@ footer .container {
 	font-size: 12px;
 	font-weight: 400;
 }
-
-.zhuige-score-list {
-	width: 400px;
+.zhuige-scrore-rate-login {
+	flex-direction: row-reverse;
 }
-
+.zhuige-score-list {
+	width: 70%;
+}
+#resource-score .zhuige-score-list {
+	padding-left: 50px;
+}
 .zhuige-scrore-line {}
 
 .zhuige-scrore-type {
-	width: 30px;
+	width: 40px;
 	color: #666666;
 }
 
 .zhuige-scrore-percent {
-	width: 320px;
+	width: 90%;
 	background: #F2F2F2;
 	border-radius: 12px;
 	height: 12px;
@@ -3517,6 +3607,7 @@ footer .container {
 	width: 40px;
 	padding-left: 10px;
 	color: #666666;
+	text-align: right;
 }
 
 .zhuige-resource-recommend h5 {
@@ -3526,11 +3617,18 @@ footer .container {
 }
 
 .zhuige-resource-recommend .zhuige-list {
-	flex-direction: row-reverse;
 	border-bottom: 1px dotted #EDEDED;
-	padding: 20px 0;
+}
+.zhuige-resource-recommend .zhuige-list .zhuige-list-bg {
+	flex-direction: row-reverse;
 }
 
+.zhuige-resource-recommend .zhuige-list-text h5.text-title a {
+	font-size: 16px;
+}
+.zhuige-resource-recommend .zhuige-list-text .sub-title a {
+	font-size: 14px;
+}
 .zhuige-resource-recommend .zhuige-list:last-of-type {
 	border: none;
 	padding-bottom: 0;
@@ -3550,7 +3648,7 @@ footer .container {
 	line-height: 40px;
 	border-radius: 40px;
 	box-shadow: 0 10px 16px -8px rgba(79, 125, 183, .5);
-	width: 600px;
+	width: 520px;
 }
 
 .zhuige-foot-tab a {
@@ -3581,7 +3679,6 @@ footer .container {
 	background-position: 0 -48px;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
-	background-position: 0 0;
 	margin: -1px 3px 0 0;
 }
 
@@ -3591,12 +3688,12 @@ footer .container {
 
 .res-opt a:hover span,
 .res-opt a.active span {
-	background-position: 0 -24px;
+	background-position: 0 -72px;
 }
 
 .res-opt a:nth-child(2):hover span,
 .res-opt a:nth-child(2).active span {
-	background-position: 0 -72px;
+	background-position: 0 -24px;
 }
 
 .zhuige-advert-text-left .zhuige-advert-text div.res-opt a:hover,
@@ -3631,6 +3728,69 @@ footer .container {
 	text-align: center;
 	border: 1px solid #DDDDDD;
 }
+
+
+/******* 产品微信支付 *******/
+
+.zhuige-prd-pay-box {
+	width: 360px;
+	baground: #FFFFFF;
+	border-radius: 2px;
+}
+.zhuige-prd-pay-info {
+	text-align: center;
+}
+.zhuige-prd-pay-info p {
+	padding: 10px 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.zhuige-prd-pay-info p img {
+	height: 36px;
+	width: auto;
+	margin: 0 auto;
+}
+.zhuige-prd-pay-info p text {
+	font-size: 14px;
+	font-weight: 500;
+	color: #333333;
+}
+.zhuige-prd-pay-info p strong {
+	color: #888888;	
+}
+
+.zhuige-prd-pay-info h3 text {
+	font-size: 14px;
+	font-weight: 400;
+	color: #333333;
+}
+.zhuige-prd-pay-info h3 strong {
+	color: #ff6600;	
+	font-weight: 500;	
+}
+.zhuige-prd-pay-qr {
+	height: 200px;
+	width: 200px;
+	overflow: hidden;
+	margin: 0 auto 20px;
+}
+.zhuige-prd-pay-qr img {
+	height: 200px;
+	width: 200px;	
+}
+.zhuige-prd-pay-tips text {
+	display: block;
+	text-align: center;
+	height: 52px;
+	line-height: 52px;
+	font-size: 14px;
+	background: #13AF2F;
+	font-weight: 400;
+	color: #FFFFFF;
+}
+
+
 
 /** 侧边栏 **/
 
@@ -3795,6 +3955,8 @@ aside .zhuige-list .zhuige-list-img,
 .lb-content {
 	width: 100%;
 	height: 100%;
+	position: relative;
+	overflow-x: hidden;
 }
 
 .lb-item {
@@ -3946,7 +4108,7 @@ aside .zhuige-list .zhuige-list-img,
 	font-weight: 600;
 	user-select: none;
 	background-color: rgba(255, 255, 255, .4);
-	color: #FFFFFF;
+	color: #99999;
 	border-radius: 40px;
 	cursor: pointer;
 	transition: all 0.1s linear;
@@ -3977,6 +4139,7 @@ aside .zhuige-list .zhuige-list-img,
 	right: auto;
 	left: 50%;
 	margin-left: -40px;
+	margin-bottom: -40px;
 }
 
 .lb-sign li {
@@ -4153,6 +4316,7 @@ aside .zhuige-list .zhuige-list-img,
 .zhuige-topic-treble-list .zhuige-list-text,
 .zhuige-fourfold-list .zhuige-list-text {
 	flex: unset;
+	width: 100%;
 	margin-top: 20px;
 }
 
@@ -4333,6 +4497,7 @@ aside .zhuige-list .zhuige-list-img,
 }
 
 .zhuige-res-sault-block {
+	display: block;
 	height: 500px;
 	cursor: pointer;
 }
@@ -4346,7 +4511,7 @@ aside .zhuige-list .zhuige-list-img,
 	background: #1173EB;
 	color: #FFFFFF;
 	font-size: 12px;
-	font-weight: 300;
+	font-weight: 400;
 	z-index: 9;
 }
 
@@ -4359,6 +4524,7 @@ aside .zhuige-list .zhuige-list-img,
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	border-radius: 8px;
 }
 
 .zhuige-res-sault-cover img {
@@ -4366,6 +4532,10 @@ aside .zhuige-list .zhuige-list-img,
 	height: 100%;
 	object-fit: cover;
 	border-radius: 8px;
+	transition: transform 0.5s;
+}
+.zhuige-res-sault-cover:hover img {
+	transform: scale(1.1);	
 }
 
 .zhuige-res-sault-info {
@@ -4392,6 +4562,10 @@ aside .zhuige-list .zhuige-list-img,
 	color: #FFFFFF;
 	font-size: 14px;
 	font-weight: 500;
+	height: 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .zhuige-res-sault .md-3:nth-child(1) .zhuige-res-sault-block:nth-child(1) {
@@ -4599,7 +4773,7 @@ aside .zhuige-list .zhuige-list-img,
 	position: fixed;
 	height: 100%;
 	width: 100%;
-	z-index: 999;
+	z-index: 1299;
 	background: rgba(0, 0, 0, 0.6);
 	top: 0;
 	left: 0;
@@ -4612,7 +4786,7 @@ aside .zhuige-list .zhuige-list-img,
 	position: relative;
 }
 
-.group-pop {
+.group-pop, .zhuige-resource-download-box {
 	width: 520px;
 }
 
@@ -4781,6 +4955,41 @@ aside .zhuige-list .zhuige-list-img,
 	margin-right: 4px;
 }
 
+.zhuige-resource-download-info {
+	
+}
+.zhuige-resource-download-info h4 {
+	font-size: 16px;
+	font-weight: 500;
+}
+.zhuige-resource-download-info p {
+	padding: 20px 0;
+	border-bottom: 1px solid #DDDDDD;
+	font-size: 14px;
+	font-weight: 400;
+	color: #1272EB;
+}
+.zhuige-resource-download-info p a {
+	color: #1272EB;	
+}
+.zhuige-resource-download-info p a:hover {
+	opacity: .8;
+}
+.zhuige-resource-download-tips {
+	padding: 0 20px 20px;
+}
+.zhuige-resource-download-tips h4 {
+	font-size: 14px;
+	font-weight: 500;
+	padding 10px 0 0;
+}
+.zhuige-resource-download-tips p {
+	padding: 10px 0 0;
+	font-size: 12px;
+	font-weight: 400;
+	color: #999999;
+}
+
 /* 找回密码 */
 .zhuige-re-pass {
 	padding: 160px 0;
@@ -4852,32 +5061,40 @@ aside .zhuige-list .zhuige-list-img,
 	color: #C7A773;
 	font-weight: 500;
 }
-
-.zhuige-vip-group {
-	border-bottom: 1px solid #D8D8D8;
+.zhuige-vip-type-recommend {
+	
 }
 
-.zhuige-vip-group div {
+
+.zhuige-vip-group {
+	margin: 0 -1%;
+	overflow-x: scroll;
+}
+.zhuige-vip-group::-webkit-scrollbar {
+	display: none;
+}
+
+.zhuige-vip-group div.zhuige-vip-type-price {
 	width: 24%;
 	text-align: center;
 	border: 1px solid #D8D8D8;
 	background: #FCFCFC;
 	border-radius: 8px;
-	margin-right: 1.25%;
+	margin: 0 0.6%;
 	padding: 20px 10px;
 	position: relative;
 	cursor: pointer;
+	display: flex;
 }
 
-.zhuige-vip-group div:hover,
+.zhuige-vip-group .zhuige-vip-type-price:hover,
 .zhuige-vip-group div.active {
 	border-color: #F59B23;
 	background: #FEF6ED;
 
 }
-
-.zhuige-vip-group div:nth-child(4) {
-	margin-right: 0;
+.zhuige-vip-group div.zhuige-vip-type-price div {
+	
 }
 
 .zhuige-vip-group div span {
@@ -4889,7 +5106,7 @@ aside .zhuige-list .zhuige-list-img,
 	border-radius: 8px 0 8px 0;
 	padding: 4px 12px;
 	top: -3px;
-	left: -5px;
+	left: -9px;
 }
 
 .zhuige-vip-group h5 {
@@ -4921,6 +5138,10 @@ aside .zhuige-list .zhuige-list-img,
 	font-weight: 300;
 	color: #555555;
 	text-decoration: line-through;
+}
+
+.zhuige-vip-group-pay {
+	border-top: 1px solid #EEEEEE;
 }
 
 .zhuige-pop-pay-qr {}
@@ -4957,7 +5178,13 @@ aside .zhuige-list .zhuige-list-img,
 	color: #1272EB;
 }
 
+.zhuige-vip-intro .zhuige-qa-list p a {
+	font-size: 16px;
+}
 
+.zhuige-vip-intro .lb-sign {
+	margin-bottom: 20px;
+}
 
 /* 内容为空 start */
 .zhuige-none-tips {
@@ -5033,8 +5260,39 @@ aside .zhuige-list .zhuige-list-img,
 	height: 1.1em;
 }
 
+.zhuige-arc-page .md-9 {
+	 max-width: 80%;
+	-webkit-box-flex: 0;
+	-webkit-flex: 0 0 80%;
+	-ms-flex: 0 0 80%;
+	flex: 0 0 80%;
+}
+/******* wp相册适配 *******/
 
+#gallery-1 {
+	display: flex!important;
+	flex-wrap: nowrap;
+	overflow-x: auto!important;
+	overflow-y: hidden!important;
+	scrollbar-width: none!important;
+}
 
+#gallery-1 .gallery-item {
+    padding: 10px 0!important;
+	margin: 0 10px 0 0!important;
+	float: none!important;
+	width: unset!important;
+	
+}
+#gallery-1 .gallery-caption {
+	padding: 10px 0;
+	font-size: 12px;
+}
+
+#gallery-1 img {
+	border-width: 1px!important;
+	max-width: max-content!important;
+}
 
 /* 移动端  footer */
 /******* h5适配 *******/
@@ -5102,7 +5360,6 @@ aside .zhuige-list .zhuige-list-img,
 		overflow-x: auto;
 		overflow-y: hidden;
 		display: inherit;
-		padding-left: 20px;
 	}
 
 	.zhuige-list-type::-webkit-scrollbar {
@@ -5114,7 +5371,7 @@ aside .zhuige-list .zhuige-list-img,
 		padding: 20px;
 		line-height: 2em;
 	}
-
+	
 	.zhuige-foot-link {
 		display: none;
 	}
@@ -5236,10 +5493,44 @@ aside .zhuige-list .zhuige-list-img,
 		margin: 0 20px;
 	}
 
+	.zhuige-resource-opt .zhuige-search-form,
+	.zhuige-resource-opt .zhuige-search-form input {
+		width: 100%;
+	}	
 	
-	/* vip 资源 */
+	.zhuige-resource-search .zhuige-main-search {
+		margin: 0 auto;
+	}
+	.zhuige-resource-search .zhuige-main-search h1 {
+		text-align: center;
+		text-indent: 0;
+	}
+	.zhuige-res-sault-block {
+		height: 300px;
+	}
+	.zhuige-res-sault .row .md-3:nth-child(2n) {
+		margin-bottom: 20px;
+	}
+	.zhuige-res-sault .md-3:nth-child(1) .zhuige-res-sault-block:nth-child(1),
+	.zhuige-res-sault .md-3:nth-child(3) .zhuige-res-sault-block:nth-child(2) {
+		height: 170px;
+	}
+	
+	.zhuige-res-sault .md-3:nth-child(1) .zhuige-res-sault-block:nth-child(2),
+	.zhuige-res-sault .md-3:nth-child(3) .zhuige-res-sault-block:nth-child(1) {
+		height: 110px;
+	}
+	.zhuige-user-msg .zhuige-user .user-info p {
+		height: 1.8em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	
 	.zhuige-vip-goods-group {
-		background-size: auto 100%;
+		background-size: cover;
+		background-position-x: center;
 	}
 	.zhuige-resource-search .zhuige-search-form {
 		width: 100%;
@@ -5277,11 +5568,18 @@ aside .zhuige-list .zhuige-list-img,
 		border: none;
 		margin-bottom: 10px;
 	}
-	.zhuige-score-list {
+	#resource-score .zhuige-score-list {
 		width: 100%;
+		padding-left: 0;
 	}
 	.zhuige-foot-tab {
 		width: 100%;
+	}
+	.zhuige-comment-input input {
+		width: 76%;
+	}
+	.zhuige-comment-input a {
+		width: 24%;		
 	}
 	.zhuige-foot-tab > div {
 		overflow: hidden;
@@ -5290,13 +5588,63 @@ aside .zhuige-list .zhuige-list-img,
 	.zhuige-foot-tab > div::-webkit-scrollbar {
 		display: none;
 	}
-	.zhuige-vip-group div {
-		width: 32.3%;
+	.zhuige-vip-group div.zhuige-vip-type-price {
+		width: 33.3%;
 	}
-	.zhuige-vip-group div:nth-last-child(3n) {
-		margin-right: 0;
+	.zhuige-vip-group div.zhuige-vip-type-price div {
+		min-width: 80px;
 	}
 	.zhuige-re-pass-form {
 		width: 90%;
+	}
+
+	
+	.zhuige-qa-list p a {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 1.6em;
+	}
+	.zhuige-list .overFlow-n {
+		-webkit-line-clamp: 1;
+	}
+	.zhuige-resource-bar {
+		display: none;
+	}
+	.zhuige-foot-tab {
+		display: none;
+	}
+	.group-pop, .zhuige-resource-download-box {
+		width: 90%;
+	}
+	.zhuige-poster .zhuige-user {
+		width: 100%;
+		overflow: hidden;
+	}
+	.zhuige-poster .user-info p {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 1em;
+	}
+	.zhuige-intro-module .xs-6:nth-child(2n-1) {
+		padding-right: 5px;
+	}
+	.zhuige-intro-module .xs-6:nth-child(2n) {
+		padding-left: 5px;
+	}
+	.zhuige-order .zhuige-list-bg > .zhuige-order-pay {
+		display: none;
+	}
+	.zhuige-order .zhuige-list .zhuige-list-text > .zhuige-order-pay {
+		display: block;
+		text-align: left;
+		padding-top: 6px;
+	}
+	.zhuige-list-type a:nth-child(1) {
+		margin-left: 0;
+	}
+	.zhuige-uc .zhuige-box h1 text {
+		margin-bottom: 0;
 	}
 }
