@@ -4,7 +4,7 @@ Theme URI: https://www.zhuige.com
 Author: zhuige.com
 Author URI: https://www.zhuige.com
 Description: 追格主题
-Version: 1.2.0
+Version: 1.2.1
 Requires PHP: 7.2
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -5647,4 +5647,17 @@ aside .zhuige-list .zhuige-list-img,
 	.zhuige-uc .zhuige-box h1 text {
 		margin-bottom: 0;
 	}
+}
+
+body .layui-layer-noboxshade{
+    background: 0 0;
+    box-shadow: none;
+}
+
+body .layui-layer-noboxshade .layui-layer-content {
+    overflow: hidden;
+}
+
+body .layui-layer-noboxshade .layui-layer-content img {
+	width: auto;
 }
