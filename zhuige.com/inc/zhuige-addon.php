@@ -3,7 +3,6 @@
 /**
  * 追格主题
  * 作者: 追格
- * Copyright © 2023 www.zhuige.com All rights reserved.
  */
 
 class ZhuiGe_Theme_Addon
